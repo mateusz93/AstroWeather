@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package dmcs.astroWeather;
 
 import org.junit.Test;
 
