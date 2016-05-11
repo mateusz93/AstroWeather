@@ -2,4 +2,18 @@
     <string name="app_name">AstroWeather</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="sun.AzimuthRise">Wschód azymut</string>
+    <string name="sun.AzimuthSet">Zachód azymut</string>
+    <string name="sun.Sunrise">Wschód czas</string>
+    <string name="sun.Sunset">Zachód czas</string>
+    <string name="sun.TwilightEvening">Zmierzch czas</string>
+    <string name="sun.TwilightMorning">Świt cywilny</string>
+
+    <string name="moon.Age">Dzień miesiąca synodycznego</string>
+    <string name="moon.Illumination">Faza księżyca</string>
+    <string name="moon.Moonrise">Wschód czas</string>
+    <string name="moon.Moonset"> Zachód czas</string>
+    <string name="moon.NextFullMoon">Następna pełnia</string>
+    <string name="moon.NextNewMoon">Następny nów</string>
 </resources>
