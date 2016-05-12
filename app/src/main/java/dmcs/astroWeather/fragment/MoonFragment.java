@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dmcs.astroWeather.Moon;
 import dmcs.astroWeather.R;
@@ -42,7 +43,6 @@ public class MoonFragment extends Fragment {
 //        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
         setTextViews(rootView);
-
         return rootView;
     }
 

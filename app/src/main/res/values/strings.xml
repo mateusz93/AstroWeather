@@ -16,4 +16,9 @@
     <string name="moon.Moonset"> Zachód czas</string>
     <string name="moon.NextFullMoon">Następna pełnia</string>
     <string name="moon.NextNewMoon">Następny nów</string>
+
+    <string name="settings.latitute">Szerokość geograficzna</string>
+    <string name="settings.longitude">Długość geograficzna</string>
+    <string name="settings.refreshing">Odświeżanie w sekundach</string>
+    <string name="settings.save">Zapisz</string>
 </resources>

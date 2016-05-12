@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.Sun;
 import dmcs.astroWeather.util.AstroDateTimeFormatter;
@@ -70,5 +73,11 @@ public class SunFragment extends Fragment {
 
         TextView sunTwilightEvening = (TextView) rootView.findViewById(R.id.sunTwilightEvening);
         sunTwilightEvening.setText(getString(R.string.sun_TwilightEvening) + ": " + AstroDateTimeFormatter.getFormattedTime(sun.getTwilightEvening()));
+
+        TextView time = (TextView) rootView.findViewById(dmcs.astroWeather.R.id.helpTime);
+        if (time != null) {
+            time.setText(DateFormat.getDateTimeInstance().format(new Date()));
+        }
     }
+
 }
