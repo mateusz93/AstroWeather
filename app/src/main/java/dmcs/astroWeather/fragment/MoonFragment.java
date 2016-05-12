@@ -1,6 +1,7 @@
 package dmcs.astroWeather.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import dmcs.astroWeather.Moon;
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.util.AstroDateTimeFormatter;
+import dmcs.astroWeather.util.Parameter;
 
 /**
  * Created by Mateusz on 2016-05-11.
@@ -18,6 +20,7 @@ import dmcs.astroWeather.util.AstroDateTimeFormatter;
 public class MoonFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private Thread thread;
     private Moon moon;
 
     public MoonFragment() {
@@ -42,8 +45,38 @@ public class MoonFragment extends Fragment {
 //        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 //        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
-        setTextViews(rootView);
+        thread = createThread(rootView);
+        thread.start();
+
         return rootView;
+    }
+
+    @NonNull
+    private Thread createThread(final View rootView) {
+        return new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                setTextViews(rootView);
+                            }
+                        });
+                        Thread.sleep(Parameter.refreshIntervalInSec * 1000);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        thread.interrupt();
     }
 
     // Store instance variables based on arguments passed

@@ -1,4 +1,4 @@
-package dmcs.astroWeather;
+package dmcs.astroWeather.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,13 +16,15 @@ import android.widget.TextView;
 import java.text.DateFormat;
 import java.util.Date;
 
-import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.R;
+import dmcs.astroWeather.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter sectionsPagerAdapter;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private Thread timeThread, fragmentThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,35 +37,12 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-        Thread timeThread = createTimeThread();
+        timeThread = createTimeThread();
         timeThread.start();
 
-        Thread fragmentThread = createFragmentThread();
-        fragmentThread.start();
-    }
-
-    @NonNull
-    private Thread createFragmentThread() {
-        return new Thread() {
-            @Override
-            public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                                viewPager.setAdapter(sectionsPagerAdapter);
-                                tabLayout.setupWithViewPager(viewPager);
-                            }
-                        });
-                        Thread.sleep(Parameter.refreshIntervalInSec * 1000);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(sectionsPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @NonNull
@@ -117,5 +96,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timeThread.interrupt();
+        getDelegate().onStop();
+    }
 
 }
