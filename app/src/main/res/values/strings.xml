@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">AstroWeather</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="action_localizations">Localizations</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="localizationList">Your added localizations</string>
+    <string name="newLocalization">new</string>
 
     <string name="sun.AzimuthRise">Wschód azymut</string>
     <string name="sun.AzimuthSet">Zachód azymut</string>
@@ -21,4 +25,5 @@
     <string name="settings.longitude">Długość geograficzna</string>
     <string name="settings.refreshing">Odświeżanie w sekundach</string>
     <string name="settings.save">Zapisz</string>
+
 </resources>

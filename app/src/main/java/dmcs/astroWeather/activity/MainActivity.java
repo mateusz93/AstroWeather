@@ -43,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
     }
+
 
     @NonNull
     private Thread createTimeThread() {
@@ -89,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
             Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vb.vibrate(30);
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_localizations) {
+            Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vb.vibrate(30);
+            Intent intent = new Intent(MainActivity.this, LocationsActivity.class);
             startActivity(intent);
             return true;
         }
