@@ -31,6 +31,10 @@ public class SettingsActivity extends Activity {
         initOnClicks();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private void init() {
         latituteValue = (EditText) findViewById(R.id.latituteValue);
         longitudeValue = (EditText) findViewById(R.id.longitudeValue);
