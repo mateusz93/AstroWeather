@@ -5,6 +5,8 @@ import com.astrocalculator.AstroDateTime;
 
 import java.util.Calendar;
 
+import dmcs.astroWeather.util.Parameter;
+
 /**
  * Created by Mateusz on 2016-05-10.
  */
@@ -25,7 +27,7 @@ public class Moon {
         astroDateTime.setTimezoneOffset((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) / (3600 * 1000));
         astroDateTime.setDaylightSaving(true);
 
-        AstroCalculator.Location location = new AstroCalculator.Location(51.751252, 19.452456);
+        AstroCalculator.Location location = new AstroCalculator.Location(Parameter.latitute, Parameter.longitude);
         astroCalculator = new AstroCalculator(astroDateTime, location);
         astroCalculator.setDateTime(astroDateTime);
         astroCalculator.setLocation(location);

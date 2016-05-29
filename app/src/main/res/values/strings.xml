@@ -6,6 +6,7 @@
     <string name="delete">Delete</string>
     <string name="localizationList">Your added localizations</string>
     <string name="newLocalization">new</string>
+    <string name="coordinates">Coordinates:</string>
 
     <string name="sun.AzimuthRise">Wschód azymut</string>
     <string name="sun.AzimuthSet">Zachód azymut</string>

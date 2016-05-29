@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="50dp"
-            android:layout_gravity="center_horizontal">
+            android:weightSum="10"
+            android:layout_margin="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/settings.latitute"
-                android:id="@+id/latitute" />
+                android:id="@+id/latitute"
+                android:layout_weight="3"
+                android:layout_marginTop="11dp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:inputType="numberDecimal"
                 android:ems="10"
-                android:id="@+id/latituteValue" />
+                android:id="@+id/latituteValue"
+                android:maxWidth="30dp"
+                android:layout_weight="7" />
         </LinearLayout>
 
         <LinearLayout
@@ -35,43 +37,51 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:layout_gravity="center_horizontal">
+            android:weightSum="10"
+            android:layout_margin="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/settings.longitude"
-                android:id="@+id/longitude" />
+                android:id="@+id/longitude"
+                android:layout_weight="3"
+                android:layout_marginTop="11dp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:inputType="numberDecimal"
                 android:ems="10"
-                android:id="@+id/longitudeValue" />
+                android:id="@+id/longitudeValue"
+                android:layout_weight="7" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:layout_gravity="center_horizontal">
+            android:weightSum="10"
+            android:layout_margin="10dp">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/settings.refreshing"
-                android:id="@+id/refreshing" />
+                android:id="@+id/refreshing"
+                android:layout_weight="3"
+                android:layout_marginTop="11dp" />
 
             <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:inputType="number"
                 android:ems="10"
-                android:id="@+id/refreshingValue" />
+                android:id="@+id/refreshingValue"
+                android:layout_weight="7" />
         </LinearLayout>
 
         <TextView
@@ -86,6 +96,5 @@
             android:text="@string/settings.save"
             android:layout_gravity="center_horizontal" />
 
-    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

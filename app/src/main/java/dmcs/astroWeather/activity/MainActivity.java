@@ -18,6 +18,7 @@ import java.util.Date;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.SectionsPagerAdapter;
+import dmcs.astroWeather.util.Parameter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.container);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        TextView coordinates = (TextView) findViewById(R.id.coordinates);
+        if (coordinates != null) {
+            coordinates.setText(getString(R.string.coordinates) + " " + Parameter.latitute + ", " + Parameter.longitude);
+        }
 
         timeThread = createTimeThread();
         timeThread.start();

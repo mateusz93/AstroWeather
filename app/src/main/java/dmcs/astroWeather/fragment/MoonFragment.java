@@ -13,6 +13,7 @@ import dmcs.astroWeather.Moon;
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.util.AstroDateTimeFormatter;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.StringFormatter;
 
 /**
  * Created by Mateusz on 2016-05-11.
@@ -23,9 +24,7 @@ public class MoonFragment extends Fragment {
     private Thread thread;
     private Moon moon;
 
-    public MoonFragment() {
-        moon = new Moon();
-    }
+    public MoonFragment() {}
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -86,22 +85,30 @@ public class MoonFragment extends Fragment {
     }
 
     private void setTextViews(View rootView) {
+        moon = new Moon();
+
         TextView moonAge = (TextView) rootView.findViewById(R.id.moonAge);
-        moonAge.setText(getString(R.string.moon_Age) + ": " + String.format("%.4f", moon.getAge()));
+        moonAge.setText(StringFormatter.padRight(getString(R.string.moon_Age) + ": ", 30)
+                + String.format("%10s", String.format("%.4f", moon.getAge())));
 
         TextView moonIllumination = (TextView) rootView.findViewById(R.id.moonIllumination);
-        moonIllumination.setText(getString(R.string.moon_Illumination) + ": " + String.format("%.4f", moon.getIllumination()));
+        moonIllumination.setText(StringFormatter.padRight(getString(R.string.moon_Illumination) + ": ", 30)
+                + String.format("%10s", String.format("%.4f", moon.getIllumination())));
 
         TextView moonMoonrise = (TextView) rootView.findViewById(R.id.moonMoonrise);
-        moonMoonrise.setText(getString(R.string.moon_Moonrise) + ": " + AstroDateTimeFormatter.getFormattedTime(moon.getMoonrise()));
+        moonMoonrise.setText(StringFormatter.padRight(getString(R.string.moon_Moonrise) + ": ", 30)
+                + String.format("%10s", AstroDateTimeFormatter.getFormattedTime(moon.getMoonrise())));
 
         TextView moonMoonset = (TextView) rootView.findViewById(R.id.moonMoonset);
-        moonMoonset.setText(getString(R.string.moon_Moonset) + ": " + AstroDateTimeFormatter.getFormattedTime(moon.getMoonset()));
+        moonMoonset.setText(StringFormatter.padRight(getString(R.string.moon_Moonset) + ": ", 30)
+                + String.format("%10s", AstroDateTimeFormatter.getFormattedTime(moon.getMoonset())));
 
         TextView moonNextFullMoon = (TextView) rootView.findViewById(R.id.moonNextFullMoon);
-        moonNextFullMoon.setText(getString(R.string.moon_NextFullMoon) + ": " + AstroDateTimeFormatter.getFormattedDateAndTime(moon.getNextFullMoon()));
+        moonNextFullMoon.setText(StringFormatter.padRight(getString(R.string.moon_NextFullMoon) + ": ", 20)
+                + String.format("%20s", AstroDateTimeFormatter.getFormattedDateAndTime(moon.getNextFullMoon())));
 
         TextView moonNextNewMoon = (TextView) rootView.findViewById(R.id.moonNextNewMoon);
-        moonNextNewMoon.setText(getString(R.string.moon_NextNewMoon) + ": " + AstroDateTimeFormatter.getFormattedDateAndTime(moon.getNextNewMoon()));
+        moonNextNewMoon.setText(StringFormatter.padRight(getString(R.string.moon_NextNewMoon) + ": ", 20)
+                + String.format("%20s", AstroDateTimeFormatter.getFormattedDateAndTime(moon.getNextNewMoon())));
     }
 }
