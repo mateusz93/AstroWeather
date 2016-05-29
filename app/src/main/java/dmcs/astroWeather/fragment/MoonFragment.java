@@ -93,7 +93,7 @@ public class MoonFragment extends Fragment {
 
         TextView moonIllumination = (TextView) rootView.findViewById(R.id.moonIllumination);
         moonIllumination.setText(StringFormatter.padRight(getString(R.string.moon_Illumination) + ": ", 30)
-                + String.format("%10s", String.format("%.4f", moon.getIllumination())));
+                + String.format("%10s", "" + (int)(moon.getIllumination() * 100)) + "%");
 
         TextView moonMoonrise = (TextView) rootView.findViewById(R.id.moonMoonrise);
         moonMoonrise.setText(StringFormatter.padRight(getString(R.string.moon_Moonrise) + ": ", 30)

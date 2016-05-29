@@ -8,23 +8,22 @@
     <string name="newLocalization">new</string>
     <string name="coordinates">Coordinates:</string>
 
-    <string name="sun.AzimuthRise">Wschód azymut</string>
-    <string name="sun.AzimuthSet">Zachód azymut</string>
-    <string name="sun.Sunrise">Wschód czas</string>
-    <string name="sun.Sunset">Zachód czas</string>
-    <string name="sun.TwilightEvening">Zmierzch czas</string>
-    <string name="sun.TwilightMorning">Świt cywilny</string>
+    <string name="sun.AzimuthRise">Azimuth Rise</string>
+    <string name="sun.AzimuthSet">Azimuth Set</string>
+    <string name="sun.Sunrise">Sunrise</string>
+    <string name="sun.Sunset">Sunset</string>
+    <string name="sun.TwilightEvening">Twilight Evening</string>
+    <string name="sun.TwilightMorning">Twilight Morning</string>
 
-    <string name="moon.Age">Dzień miesiąca synodycznego</string>
-    <string name="moon.Illumination">Faza księżyca</string>
-    <string name="moon.Moonrise">Wschód czas</string>
-    <string name="moon.Moonset"> Zachód czas</string>
-    <string name="moon.NextFullMoon">Następna pełnia</string>
-    <string name="moon.NextNewMoon">Następny nów</string>
+    <string name="moon.Age">Age</string>
+    <string name="moon.Illumination">Illumination</string>
+    <string name="moon.Moonrise">Moonrise</string>
+    <string name="moon.Moonset">Moonset</string>
+    <string name="moon.NextFullMoon">Next full moon</string>
+    <string name="moon.NextNewMoon">Next new moon</string>
 
-    <string name="settings.latitute">Szerokość geograficzna</string>
-    <string name="settings.longitude">Długość geograficzna</string>
-    <string name="settings.refreshing">Odświeżanie w sekundach</string>
-    <string name="settings.save">Zapisz</string>
-
+    <string name="settings.latitute">Latitute</string>
+    <string name="settings.longitude">Longitude</string>
+    <string name="settings.refreshing">Refreshing in sec</string>
+    <string name="settings.save">Save</string>
 </resources>
