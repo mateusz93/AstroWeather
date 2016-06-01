@@ -26,4 +26,11 @@
     <string name="settings.longitude">Longitude</string>
     <string name="settings.refreshing">Refreshing in sec</string>
     <string name="settings.save">Save</string>
+
+    <string name="newLocalization.name">Name</string>
+    <string name="newLocalization.longitude">Longitude</string>
+    <string name="newLocalization.latitute">Latitute</string>
+    <string name="newLocalization.city">City</string>
+    <string name="newLocalization.country">Country</string>
+    <string name="newLocalization.save">Save</string>
 </resources>

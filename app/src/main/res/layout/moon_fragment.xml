@@ -8,7 +8,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="dmcs.astroWeather.fragment.MoonFragment"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:id="@+id/moonFragmentLayout">
 
     <ScrollView
         android:layout_width="fill_parent"

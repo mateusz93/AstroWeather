@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "androidDatabase.db";
-    public static final String LOCATION_TABLE_NAME = "location";
+    public static final String DATABASE_NAME = "androidDatabase.db3";
+    public static final String LOCATION_TABLE_NAME = "localization";
     public static final String LOCATION_COLUMN_ID = "id";
     public static final String LOCATION_COLUMN_WOEID = "woeid";
     public static final String LOCATION_COLUMN_LATITUDE = "latitude";
@@ -25,9 +25,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String LOCATION_COLUMN_COUNTRY = "country";
     public static final String LOCATION_COLUMN_NAME = "name";
 
-    private final String CREATE_TABLES = "CREATE TABLE IF NOT EXISTS location(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+    private final String CREATE_TABLES = "CREATE TABLE IF NOT EXISTS localization(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
             "woeid VARCHAR, latitude VARCHAR, longitude VARCHAR, city VARCHAR, country VARCHAR, name VARCHAR);";
-    private final String DROP_TABLES = "DROP TABLE IF EXISTS location;";
+    private final String DROP_TABLES = "DROP TABLE IF EXISTS localization;";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -40,10 +40,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     private void generateData(SQLiteDatabase db) {
-        db.execSQL("INSERT INTO location (name, city, country) VALUES ('Lodz', 'lodz', 'pl')");
-        db.execSQL("INSERT INTO location (name, city, country) VALUES ('Poznan', 'poznan', 'pl')");
-        db.execSQL("INSERT INTO location (name, city, country) VALUES ('Wroclaw', 'wroclaw', 'pl')");
-        db.execSQL("INSERT INTO location (name, city, country) VALUES ('Warszawa', 'warszawa', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Lodz', 'lodz', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Poznan', 'poznan', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Wroclaw', 'wroclaw', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Warszawa', 'warszawa', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Sopot', 'sopot', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Katowice', 'katowice', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Kraków', 'krakow', 'pl')");
+        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Częstochowa', 'czestochowa', 'pl')");
     }
 
     @Override
@@ -61,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("longitude", longitude);
         contentValues.put("city", city);
         contentValues.put("country", country);
-        db.insert("location", null, contentValues);
+        db.insert("localization", null, contentValues);
         return true;
     }
 
@@ -74,53 +78,53 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("longitude", longitude);
         contentValues.put("city", city);
         contentValues.put("country", country);
-        db.update("location", contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        db.update("localization", contentValues, "id = ? ", new String[]{Integer.toString(id)});
         return true;
     }
 
-    public Location findLocationById(int id) {
+    public Localization findLocationById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from location where id=" + id + "", null);
+        Cursor cursor = db.rawQuery("select * from localization where id=" + id + "", null);
         cursor.moveToFirst();
 
-        Location location = new Location();
-        location.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
-        location.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
-        location.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
-        location.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
-        location.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
-        location.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
-        location.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
+        Localization localization = new Localization();
+        localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
+        localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
+        localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
+        localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
+        localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
+        localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
+        localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
 
-        return location;
+        return localization;
     }
 
-    public List<Location> findAllLocation() {
-        List<Location> locations = new ArrayList<>();
+    public List<Localization> findAllLocation() {
+        List<Localization> localizations = new ArrayList<>();
 
         //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery("select * from location", null);
+        Cursor cursor =  db.rawQuery("select * from localization", null);
         cursor.moveToFirst();
 
         while(!cursor.isAfterLast()){
-            Location location = new Location();
-            location.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
-            location.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
-            location.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
-            location.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
-            location.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
-            location.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
-            location.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
-            locations.add(location);
+            Localization localization = new Localization();
+            localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
+            localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
+            localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
+            localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
+            localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
+            localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
+            localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
+            localizations.add(localization);
             cursor.moveToNext();
         }
-        return locations;
+        return localizations;
     }
 
     public Integer deleteLocation(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("location", "id = ? ", new String[]{Integer.toString(id)});
+        return db.delete("localization", "id = ? ", new String[]{Integer.toString(id)});
     }
 
     public int getNumberOfRows() {

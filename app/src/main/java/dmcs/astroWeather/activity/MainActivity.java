@@ -22,10 +22,7 @@ import dmcs.astroWeather.util.Parameter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SectionsPagerAdapter sectionsPagerAdapter;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private Thread timeThread, fragmentThread;
+    private Thread timeThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.container);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         TextView coordinates = (TextView) findViewById(R.id.coordinates);
         if (coordinates != null) {
@@ -46,12 +43,16 @@ public class MainActivity extends AppCompatActivity {
         timeThread = createTimeThread();
         timeThread.start();
 
-        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(sectionsPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        if (viewPager != null) {
+            SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            viewPager.setAdapter(sectionsPagerAdapter);
+            if (tabLayout != null) {
+                tabLayout.setupWithViewPager(viewPager);
+            }
+        } else {
 
+        }
     }
-
 
     @NonNull
     private Thread createTimeThread() {
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_localizations) {
             Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vb.vibrate(30);
-            Intent intent = new Intent(MainActivity.this, LocationsActivity.class);
+            Intent intent = new Intent(MainActivity.this, LocalizationsActivity.class);
             startActivity(intent);
             return true;
         }

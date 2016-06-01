@@ -3,7 +3,7 @@ package dmcs.astroWeather.db;
 /**
  * Created by Mateusz on 2016-05-28.
  */
-public class Location {
+public class Localization {
 
     private String id;
     private String woeid;

@@ -25,7 +25,11 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".activity.LocationsActivity"
+            android:name=".activity.LocalizationsActivity"
+            android:label="@string/app_name">
+        </activity>
+        <activity
+            android:name=".activity.NewLocalizationActivity"
             android:label="@string/app_name">
         </activity>
     </application>
