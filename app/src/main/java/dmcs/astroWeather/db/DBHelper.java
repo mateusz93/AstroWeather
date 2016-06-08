@@ -25,9 +25,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String LOCATION_COLUMN_CITY = "city";
     public static final String LOCATION_COLUMN_COUNTRY = "country";
     public static final String LOCATION_COLUMN_NAME = "name";
+    public static final String LOCATION_COLUMN_LAST_WEATHER_UPDATE = "lastWeatherUpdate";
 
     private final String CREATE_TABLES = "CREATE TABLE IF NOT EXISTS localization(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            "woeid VARCHAR, latitude VARCHAR, longitude VARCHAR, city VARCHAR, country VARCHAR, name VARCHAR);";
+            "woeid VARCHAR, latitude VARCHAR, longitude VARCHAR, city VARCHAR, country VARCHAR, name VARCHAR, lastWeatherUpdate DATETIME DEFAULT CURRENT_TIMESTAMP);";
     private final String DROP_TABLES = "DROP TABLE IF EXISTS localization;";
 
     public DBHelper(Context context) {

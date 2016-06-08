@@ -4,8 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import dmcs.astroWeather.fragment.ForecastWeatherFragment;
 import dmcs.astroWeather.fragment.MoonFragment;
 import dmcs.astroWeather.fragment.SunFragment;
+import dmcs.astroWeather.fragment.WeatherFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -24,6 +26,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return SunFragment.newInstance(0);
             case 1:
                 return MoonFragment.newInstance(1);
+            case 2:
+                return WeatherFragment.newInstance(2);
+            case 3:
+                return ForecastWeatherFragment.newInstance(3);
             default:
                 return null;
         }
@@ -31,7 +37,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 4;
     }
 
     @Override
@@ -41,6 +47,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return "Sun";
             case 1:
                 return "Moon";
+            case 2:
+                return "Weather";
+            case 3:
+                return "Forecast";
         }
         return null;
     }

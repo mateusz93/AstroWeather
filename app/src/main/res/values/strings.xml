@@ -7,9 +7,14 @@
     <string name="localizationList">Your added localizations</string>
     <string name="newLocalization">new</string>
     <string name="coordinates">Coordinates:</string>
+    <string name="internetAccess">Application can use internet</string>
     <string name="incorrectLocalization">Incorrect localization data</string>
     <string name="localizationSaved">New localization saved correctly</string>
     <string name="localizationDeleted">Localization deleted correctly</string>
+    <string name="sun">Sun</string>
+    <string name="moon">Moon</string>
+    <string name="weather">Weather</string>
+    <string name="forecast">Forecast</string>
 
     <string name="sun.AzimuthRise">Azimuth Rise</string>
     <string name="sun.AzimuthSet">Azimuth Set</string>
