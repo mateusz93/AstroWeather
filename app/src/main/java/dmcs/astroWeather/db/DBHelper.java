@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +60,25 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertLocation(String name, String woeid, String latitude, String longitude, String city, String country) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("woeid", woeid);
-        contentValues.put("latitude", latitude);
-        contentValues.put("longitude", longitude);
-        contentValues.put("city", city);
-        contentValues.put("country", country);
+        contentValues.put(LOCATION_COLUMN_NAME, name);
+        contentValues.put(LOCATION_COLUMN_WOEID, woeid);
+        contentValues.put(LOCATION_COLUMN_LATITUDE, latitude);
+        contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
+        contentValues.put(LOCATION_COLUMN_CITY, city);
+        contentValues.put(LOCATION_COLUMN_COUNTRY, country);
+        db.insert("localization", null, contentValues);
+        return true;
+    }
+
+    public boolean insertLocation(Localization localization) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(LOCATION_COLUMN_NAME, localization.getName());
+        contentValues.put(LOCATION_COLUMN_WOEID, localization.getWoeid());
+        contentValues.put(LOCATION_COLUMN_LATITUDE, localization.getLatitude());
+        contentValues.put(LOCATION_COLUMN_LONGITUDE, localization.getLongitude());
+        contentValues.put(LOCATION_COLUMN_CITY, localization.getCity());
+        contentValues.put(LOCATION_COLUMN_COUNTRY, localization.getCountry());
         db.insert("localization", null, contentValues);
         return true;
     }
@@ -72,19 +86,49 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean updateLocation(Integer id, String name, String woeid, String latitude, String longitude, String city, String country) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("woeid", woeid);
-        contentValues.put("latitude", latitude);
-        contentValues.put("longitude", longitude);
-        contentValues.put("city", city);
-        contentValues.put("country", country);
+        contentValues.put(LOCATION_COLUMN_NAME, name);
+        contentValues.put(LOCATION_COLUMN_WOEID, woeid);
+        contentValues.put(LOCATION_COLUMN_LATITUDE, latitude);
+        contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
+        contentValues.put(LOCATION_COLUMN_CITY, city);
+        contentValues.put(LOCATION_COLUMN_COUNTRY, country);
         db.update("localization", contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        return true;
+    }
+
+    public boolean updateLocation(Localization localization) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(LOCATION_COLUMN_NAME, localization.getName());
+        contentValues.put(LOCATION_COLUMN_WOEID, localization.getWoeid());
+        contentValues.put(LOCATION_COLUMN_LATITUDE, localization.getLatitude());
+        contentValues.put(LOCATION_COLUMN_LONGITUDE, localization.getLongitude());
+        contentValues.put(LOCATION_COLUMN_CITY, localization.getCity());
+        contentValues.put(LOCATION_COLUMN_COUNTRY, localization.getCountry());
+        db.update("localization", contentValues, "id = ? ", new String[]{localization.getId()});
         return true;
     }
 
     public Localization findLocationById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from localization where id=" + id + "", null);
+        cursor.moveToFirst();
+
+        Localization localization = new Localization();
+        localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
+        localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
+        localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
+        localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
+        localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
+        localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
+        localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
+
+        return localization;
+    }
+
+    public Localization findLocationByWoeid(String woeid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from localization where woeid=" + woeid, null);
         cursor.moveToFirst();
 
         Localization localization = new Localization();

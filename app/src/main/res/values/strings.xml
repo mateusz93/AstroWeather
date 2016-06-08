@@ -7,6 +7,8 @@
     <string name="localizationList">Your added localizations</string>
     <string name="newLocalization">new</string>
     <string name="coordinates">Coordinates:</string>
+    <string name="incorrectLocalization">Incorrect city and country or latitude and longitude</string>
+    <string name="localizationSaved">New location saved correctly</string>
 
     <string name="sun.AzimuthRise">Azimuth Rise</string>
     <string name="sun.AzimuthSet">Azimuth Set</string>
