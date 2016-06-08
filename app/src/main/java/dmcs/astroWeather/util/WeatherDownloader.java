@@ -29,8 +29,11 @@ public class WeatherDownloader {
         }
         rd.close();
         JSONObject json = new JSONObject(result.toString());
-        return json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("woeid");
-
+        if (!city.equalsIgnoreCase(json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("name"))) {
+            throw new JSONException("IncorrectCityOrCountry");
+        } else {
+            return json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("woeid");
+        }
     }
 
     public static String getWoeidByLatitudeAndLongitude(String latitude, String longitude) throws IOException, JSONException {

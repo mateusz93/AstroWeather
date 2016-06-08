@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.db.DBHelper;
@@ -21,6 +25,7 @@ import dmcs.astroWeather.db.Localization;
  */
 public class LocalizationsActivity extends Activity {
 
+    private final int DELETE_BUTTON_INTERVAL = 1_000_000;
     private DBHelper database;
     private Button newLocationButton;
 
@@ -34,13 +39,51 @@ public class LocalizationsActivity extends Activity {
     }
 
     private void initOnClicks() {
+        List<Localization> localizationList = database.findAllLocation();
+        for (Localization localization : localizationList) {
+            Button editButton = (Button) findViewById(Integer.parseInt(localization.getId()));
+            Button deleteButton = (Button) findViewById(Integer.parseInt(localization.getId()) + DELETE_BUTTON_INTERVAL);
+            final int editButtonId = Integer.parseInt(localization.getId());
+            final int deleteButtonId = Integer.parseInt(localization.getId()) + DELETE_BUTTON_INTERVAL;
+
+            setEditButtonsOnClick(editButton, editButtonId);
+            setDeleteButtonOnClick(deleteButton, deleteButtonId);
+        }
+
         newLocationButton = (Button) findViewById(R.id.newLocation);
         newLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vb.vibrate(30);
+                vb.vibrate(50);
                 Intent intent = new Intent(LocalizationsActivity.this, NewLocalizationActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setDeleteButtonOnClick(Button deleteButton, final int deleteButtonId) {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vb.vibrate(50);
+                database.deleteLocation(deleteButtonId - DELETE_BUTTON_INTERVAL);
+                Toast.makeText(LocalizationsActivity.this, getResources().getString(R.string.localizationDeleted), Toast.LENGTH_LONG).show();
+                finish();
+                startActivity(getIntent());
+            }
+        });
+    }
+
+    private void setEditButtonsOnClick(Button editButton, final int editButtonId) {
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vb.vibrate(50);
+                Intent intent = new Intent(LocalizationsActivity.this, NewLocalizationActivity.class);
+                intent.putExtra("id", editButtonId);
                 startActivity(intent);
             }
         });
@@ -90,7 +133,7 @@ public class LocalizationsActivity extends Activity {
         Button deleteButton = new Button(this);
         deleteButton.setText(getResources().getString(R.string.delete));
         deleteButton.setBackgroundColor(Color.WHITE);
-        deleteButton.setId(Integer.parseInt(localization.getId()));
+        deleteButton.setId(Integer.parseInt(localization.getId()) + DELETE_BUTTON_INTERVAL);
         return deleteButton;
     }
 

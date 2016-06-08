@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.db.DBHelper;
 import dmcs.astroWeather.db.Localization;
+import dmcs.astroWeather.exception.IncorrectLocalizationException;
 import dmcs.astroWeather.util.WeatherDownloader;
 
 /**
@@ -26,11 +28,35 @@ import dmcs.astroWeather.util.WeatherDownloader;
  */
 public class NewLocalizationActivity extends Activity {
 
+    private DBHelper database;
+    private Bundle extras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_localization);
+        database = new DBHelper(this);
+        extras = getIntent().getExtras();
+        if (extras != null) {
+            setFields(extras);
+        }
         initOnClicks();
+    }
+
+    private void setFields(Bundle extras) {
+        int localizationId = (int) extras.get("id");
+        EditText name = (EditText) findViewById(R.id.LocalizationNameValue);
+        EditText country = (EditText) findViewById(R.id.LocalizationCountryValue);
+        EditText city = (EditText) findViewById(R.id.LocalizationCityValue);
+        EditText latitude = (EditText) findViewById(R.id.LocalizationLatituteValue);
+        EditText longitude = (EditText) findViewById(R.id.LocalizationLongitudeValue);
+        Localization localization = database.findLocationById(localizationId);
+        name.setText(localization.getName());
+        name.setEnabled(false);
+        country.setText(localization.getCountry());
+        city.setText(localization.getCity());
+        latitude.setText(localization.getLatitude());
+        longitude.setText(localization.getLongitude());
     }
 
     private void initOnClicks() {
@@ -67,13 +93,28 @@ public class NewLocalizationActivity extends Activity {
 
         @Override
         protected Object doInBackground(Object... arg0) {
-            connect(name, city, country, latitude, longitude);
+            try {
+                connect(name, city, country, latitude, longitude);
+                Handler handler =  new Handler(NewLocalizationActivity.this.getMainLooper());
+                handler.post( new Runnable(){
+                    public void run(){
+                        Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.localizationSaved), Toast.LENGTH_LONG).show();
+                    }
+                });
+            } catch (IncorrectLocalizationException e) {
+                Handler handler =  new Handler(NewLocalizationActivity.this.getMainLooper());
+                handler.post( new Runnable(){
+                    public void run(){
+                        Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.incorrectLocalization), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
             return null;
         }
 
     }
 
-    private void connect(String name, String city, String country, String latitude, String longitude) {
+    private void connect(String name, String city, String country, String latitude, String longitude) throws IncorrectLocalizationException {
         Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         try {
@@ -82,8 +123,7 @@ public class NewLocalizationActivity extends Activity {
                 saveLocation(name, woeid);
 
                 Intent intent = new Intent(NewLocalizationActivity.this, LocalizationsActivity.class);
-                vb.vibrate(30);
-//                Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.localizationSaved), Toast.LENGTH_LONG).show();
+                vb.vibrate(50);
                 startActivity(intent);
 
             } else if (isCorrectLatitudeAndLongitude(latitude, longitude)){
@@ -91,12 +131,11 @@ public class NewLocalizationActivity extends Activity {
                 saveLocation(name, woeid);
 
                 Intent intent = new Intent(NewLocalizationActivity.this, LocalizationsActivity.class);
+                vb.vibrate(50);
                 startActivity(intent);
-                vb.vibrate(30);
-  //              Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.localizationSaved), Toast.LENGTH_LONG).show();
             } else {
                 vb.vibrate(500);
-    //            Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.incorrectLocalization), Toast.LENGTH_LONG).show();
+                throw new IncorrectLocalizationException();
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
@@ -140,8 +179,13 @@ public class NewLocalizationActivity extends Activity {
             localization.setCity(city);
             localization.setCountry(country);
 
-            DBHelper db = new DBHelper(this);
-            db.insertLocation(localization);
+            if (extras != null) {
+                String localizationId = database.findLocationByName(name).getId();
+                localization.setId(localizationId);
+                database.updateLocation(localization);
+            } else {
+                database.insertLocation(localization);
+            }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }

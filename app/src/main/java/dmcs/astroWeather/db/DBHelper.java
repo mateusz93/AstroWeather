@@ -66,7 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
         contentValues.put(LOCATION_COLUMN_CITY, city);
         contentValues.put(LOCATION_COLUMN_COUNTRY, country);
-        db.insert("localization", null, contentValues);
+        db.insert(LOCATION_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -79,7 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, localization.getLongitude());
         contentValues.put(LOCATION_COLUMN_CITY, localization.getCity());
         contentValues.put(LOCATION_COLUMN_COUNTRY, localization.getCountry());
-        db.insert("localization", null, contentValues);
+        db.insert(LOCATION_TABLE_NAME, null, contentValues);
         return true;
     }
 
@@ -92,7 +92,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
         contentValues.put(LOCATION_COLUMN_CITY, city);
         contentValues.put(LOCATION_COLUMN_COUNTRY, country);
-        db.update("localization", contentValues, "id = ? ", new String[]{Integer.toString(id)});
+        db.update(LOCATION_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
         return true;
     }
 
@@ -105,42 +105,68 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, localization.getLongitude());
         contentValues.put(LOCATION_COLUMN_CITY, localization.getCity());
         contentValues.put(LOCATION_COLUMN_COUNTRY, localization.getCountry());
-        db.update("localization", contentValues, "id = ? ", new String[]{localization.getId()});
+        db.update(LOCATION_TABLE_NAME, contentValues, "id = ? ", new String[]{localization.getId()});
         return true;
     }
 
     public Localization findLocationById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from localization where id=" + id + "", null);
-        cursor.moveToFirst();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LOCATION_TABLE_NAME + " WHERE id=" + id + "", null);
 
-        Localization localization = new Localization();
-        localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
-        localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
-        localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
-        localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
-        localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
-        localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
-        localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
+        if (cursor.moveToFirst()) {
+            Localization localization = new Localization();
+            localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
+            localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
+            localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
+            localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
+            localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
+            localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
+            localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
 
-        return localization;
+            return localization;
+        } else {
+            return null;
+        }
+    }
+
+    public Localization findLocationByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LOCATION_TABLE_NAME + " WHERE name='" + name + "'", null);
+
+        if (cursor.moveToFirst()) {
+            Localization localization = new Localization();
+            localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
+            localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
+            localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
+            localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
+            localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
+            localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
+            localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
+
+            return localization;
+        } else {
+            return null;
+        }
     }
 
     public Localization findLocationByWoeid(String woeid) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from localization where woeid=" + woeid, null);
-        cursor.moveToFirst();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LOCATION_TABLE_NAME + " WHERE woeid='" + woeid + "'", null);
 
-        Localization localization = new Localization();
-        localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
-        localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
-        localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
-        localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
-        localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
-        localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
-        localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
+        if (cursor.moveToFirst()) {
+            Localization localization = new Localization();
+            localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
+            localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
+            localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
+            localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
+            localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
+            localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
+            localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
 
-        return localization;
+            return localization;
+        } else {
+            return null;
+        }
     }
 
     public List<Localization> findAllLocation() {
@@ -148,10 +174,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor =  db.rawQuery("select * from localization", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LOCATION_TABLE_NAME, null);
         cursor.moveToFirst();
 
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             Localization localization = new Localization();
             localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
             localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
@@ -168,7 +194,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public Integer deleteLocation(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("localization", "id = ? ", new String[]{Integer.toString(id)});
+        return db.delete(LOCATION_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
     }
 
     public int getNumberOfRows() {
