@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
         }
+
+        Toast.makeText(MainActivity.this, getResources().getString(R.string.internetAccess), Toast.LENGTH_LONG).show();
     }
 
     @NonNull
