@@ -1,28 +1,22 @@
 package dmcs.astroWeather.fragment;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
-import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import dmcs.astroWeather.R;
-import dmcs.astroWeather.activity.LocalizationsActivity;
-import dmcs.astroWeather.exception.IncorrectLocalizationException;
 import dmcs.astroWeather.util.Parameter;
 import dmcs.astroWeather.util.StringFormatter;
 import dmcs.astroWeather.util.WeatherDownloader;
@@ -94,6 +88,14 @@ public class WeatherFragment extends Fragment {
             String atmospherePressure = weather.getJSONObject("atmosphere").getString("pressure");
             String description = weather.getJSONObject("item").getString("description");
 
+            ImageView weatherIcon = (ImageView) rootView.findViewById(R.id.weatherIcon);
+            String iconNumber = getIconNumberFromDescription(description);
+            int id = getResources().getIdentifier("icon_" + iconNumber, "drawable", getContext().getPackageName());
+            weatherIcon.setImageResource(id);
+
+            description = getCurrentConditionFromDescription(description);
+            localTime = getFormattedTime(localTime);
+
             TextView cityView = (TextView) rootView.findViewById(R.id.weatherCity);
             cityView.setText(StringFormatter.padRight(getString(R.string.weather_city) + ": ", 30)
                     + String.format("%10s", city));
@@ -107,7 +109,7 @@ public class WeatherFragment extends Fragment {
                     + String.format("%10s", longitude));
 
             TextView localTimeView = (TextView) rootView.findViewById(R.id.weatherLocalTime);
-            localTimeView.setText(StringFormatter.padRight(getString(R.string.weather_localTime) + ": ", 30)
+            localTimeView.setText(StringFormatter.padRight(getString(R.string.weather_localTime) + ": ", 20)
                     + String.format("%10s", localTime));
 
             TextView windDirectionView = (TextView) rootView.findViewById(R.id.weatherWindDirection);
@@ -138,6 +140,34 @@ public class WeatherFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    private String getFormattedTime(String localTime) {
+        String time[] = localTime.split("\\s+");
+        String formattedTime = "";
+        for (int i = 0; i < time.length -2; ++i) {
+            formattedTime += time[i] + " ";
+        }
+        return formattedTime;
+    }
+
+    private String getCurrentConditionFromDescription(String description) {
+        int firstIndex = description.indexOf("Current Conditions:");
+        int lastIndex = description.indexOf("Forecast");
+        description = description.substring(firstIndex + 19, lastIndex);
+        description = description.replaceAll("</b>", "");
+        description = description.replaceAll("<b>", "");
+        description = description.replaceAll("<BR />", "");
+        description = description.replaceAll(":", "");
+        return description.trim();
+    }
+
+    private String getIconNumberFromDescription(String description) {
+        for (int i = 0; i < 48; ++i) {
+            if (description.contains("" + i + ".gif")) {
+                return "" + i;
+            }
+        }
+        return "3200";
     }
 }
