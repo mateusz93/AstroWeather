@@ -52,4 +52,8 @@
     <string name="weather.atmosphereVisibility">Visibility</string>
     <string name="weather.atmospherePressure">Pressure</string>
     <string name="weather.description">Description</string>
+
+    <string name="forecast.date">Date</string>
+    <string name="forecast.temperature">Temperature</string>
+    <string name="forecast.description">Description</string>
 </resources>
