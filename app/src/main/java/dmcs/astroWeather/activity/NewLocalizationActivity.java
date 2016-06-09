@@ -43,6 +43,12 @@ public class NewLocalizationActivity extends Activity {
         initOnClicks();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(NewLocalizationActivity.this, LocalizationsActivity.class);
+        startActivity(intent);
+    }
+
     private void setFields(Bundle extras) {
         int localizationId = (int) extras.get("id");
         EditText name = (EditText) findViewById(R.id.LocalizationNameValue);

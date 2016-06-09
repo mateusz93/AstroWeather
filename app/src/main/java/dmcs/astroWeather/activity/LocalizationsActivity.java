@@ -38,6 +38,12 @@ public class LocalizationsActivity extends Activity {
         initOnClicks();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(LocalizationsActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
     private void initOnClicks() {
         List<Localization> localizationList = database.findAllLocation();
         for (Localization localization : localizationList) {
