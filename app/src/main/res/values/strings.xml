@@ -41,4 +41,15 @@
     <string name="newLocalization.city">City</string>
     <string name="newLocalization.country">Country</string>
     <string name="newLocalization.save">Save</string>
+
+    <string name="weather.city">City</string>
+    <string name="weather.longitude">Longitude</string>
+    <string name="weather.latitude">Latitute</string>
+    <string name="weather.localTime">Local time</string>
+    <string name="weather.windDirection">Wind direction</string>
+    <string name="weather.windSpeed">Wind speed</string>
+    <string name="weather.atmosphereHumidity">Humidity</string>
+    <string name="weather.atmosphereVisibility">Visibility</string>
+    <string name="weather.atmospherePressure">Pressure</string>
+    <string name="weather.description">Description</string>
 </resources>
