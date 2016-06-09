@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.util.Parameter;
 import dmcs.astroWeather.util.StringFormatter;
+import dmcs.astroWeather.util.Unit;
 import dmcs.astroWeather.util.WeatherDownloader;
 
 /**
@@ -97,44 +98,54 @@ public class WeatherFragment extends Fragment {
             localTime = getFormattedTime(localTime);
 
             TextView cityView = (TextView) rootView.findViewById(R.id.weatherCity);
-            cityView.setText(StringFormatter.padRight(getString(R.string.weather_city) + ": ", 30)
-                    + String.format("%10s", city));
+            cityView.setText(getString(R.string.weather_city) + ": ");
+            TextView cityValueView = (TextView) rootView.findViewById(R.id.weatherCityValue);
+            cityValueView.setText(city);
 
             TextView latitudeView = (TextView) rootView.findViewById(R.id.weatherLatitude);
-            latitudeView.setText(StringFormatter.padRight(getString(R.string.weather_latitude) + ": ", 30)
-                    + String.format("%10s", latitude));
+            latitudeView.setText(getString(R.string.weather_latitude) + ": ");
+            TextView latitudeValueView = (TextView) rootView.findViewById(R.id.weatherLatitudeValue);
+            latitudeValueView.setText(latitude);
 
             TextView longitudeView = (TextView) rootView.findViewById(R.id.weatherLongitude);
-            longitudeView.setText(StringFormatter.padRight(getString(R.string.weather_longitude) + ": ", 30)
-                    + String.format("%10s", longitude));
+            longitudeView.setText(getString(R.string.weather_longitude) + ": ");
+            TextView longitudeValueView = (TextView) rootView.findViewById(R.id.weatherLongitudeValue);
+            longitudeValueView.setText(longitude);
 
             TextView localTimeView = (TextView) rootView.findViewById(R.id.weatherLocalTime);
-            localTimeView.setText(StringFormatter.padRight(getString(R.string.weather_localTime) + ": ", 20)
-                    + String.format("%10s", localTime));
+            localTimeView.setText(getString(R.string.weather_localTime) + ": ");
+            TextView localTimeValueView = (TextView) rootView.findViewById(R.id.weatherLocalTimeValue);
+            localTimeValueView.setText(localTime);
 
             TextView windDirectionView = (TextView) rootView.findViewById(R.id.weatherWindDirection);
-            windDirectionView.setText(StringFormatter.padRight(getString(R.string.weather_windDirection) + ": ", 30)
-                    + String.format("%10s", windDirection));
+            windDirectionView.setText(getString(R.string.weather_windDirection) + ": ");
+            TextView windDirectionValueView = (TextView) rootView.findViewById(R.id.weatherWindDirectionValue);
+            windDirectionValueView.setText(windDirection);
 
             TextView windSpeedView = (TextView) rootView.findViewById(R.id.weatherWindSpeed);
-            windSpeedView.setText(StringFormatter.padRight(getString(R.string.weather_windSpeed) + ": ", 30)
-                    + String.format("%10s", windSpeed));
+            windSpeedView.setText(getString(R.string.weather_windSpeed) + ": ");
+            TextView windSpeedValueView = (TextView) rootView.findViewById(R.id.weatherWindSpeedValue);
+            windSpeedValueView.setText(windSpeed);
 
             TextView atmosphereHumidityView = (TextView) rootView.findViewById(R.id.weatherAtmosphereHumidity);
-            atmosphereHumidityView.setText(StringFormatter.padRight(getString(R.string.weather_atmosphereHumidity) + ": ", 30)
-                    + String.format("%10s", atmosphereHumidity));
+            atmosphereHumidityView.setText(getString(R.string.weather_atmosphereHumidity) + ": ");
+            TextView atmosphereHumidityValueView = (TextView) rootView.findViewById(R.id.weatherAtmosphereHumidityValue);
+            atmosphereHumidityValueView.setText(atmosphereHumidity + "%");
 
             TextView atmosphereVisibilityView = (TextView) rootView.findViewById(R.id.weatherAtmosphereVisibility);
-            atmosphereVisibilityView.setText(StringFormatter.padRight(getString(R.string.weather_atmosphereVisibility) + ": ", 30)
-                    + String.format("%10s", atmosphereVisibility));
+            atmosphereVisibilityView.setText(getString(R.string.weather_atmosphereVisibility) + ": ");
+            TextView atmosphereVisibilityValueView = (TextView) rootView.findViewById(R.id.weatherAtmosphereVisibilityValue);
+            atmosphereVisibilityValueView.setText(atmosphereVisibility);
 
             TextView atmospherePressureView = (TextView) rootView.findViewById(R.id.weatherAtmospherePressure);
-            atmospherePressureView.setText(StringFormatter.padRight(getString(R.string.weather_atmospherePressure) + ": ", 30)
-                    + String.format("%10s", atmospherePressure));
+            atmospherePressureView.setText(getString(R.string.weather_atmospherePressure) + ": ");
+            TextView atmospherePressureValueView = (TextView) rootView.findViewById(R.id.weatherAtmospherePressureValue);
+            atmospherePressureValueView.setText(atmospherePressure + Unit.PRESSURE_UNIT);
 
             TextView descriptionView = (TextView) rootView.findViewById(R.id.weatherDescription);
-            descriptionView.setText(StringFormatter.padRight(getString(R.string.weather_description) + ": ", 30)
-                    + String.format("%10s", description));
+            descriptionView.setText(getString(R.string.weather_description) + ": ");
+            TextView descriptionValueView = (TextView) rootView.findViewById(R.id.weatherDescriptionValue);
+            descriptionValueView.setText(description);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
@@ -148,7 +159,7 @@ public class WeatherFragment extends Fragment {
         for (int i = 0; i < time.length -2; ++i) {
             formattedTime += time[i] + " ";
         }
-        return formattedTime;
+        return formattedTime.trim();
     }
 
     private String getCurrentConditionFromDescription(String description) {
