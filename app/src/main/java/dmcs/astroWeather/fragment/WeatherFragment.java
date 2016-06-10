@@ -14,12 +14,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.util.Parameter;
-import dmcs.astroWeather.util.StringFormatter;
-import dmcs.astroWeather.util.Unit;
 import dmcs.astroWeather.util.WeatherDownloader;
 
 /**
@@ -77,10 +74,10 @@ public class WeatherFragment extends Fragment {
 
     private void setTextViews(final View rootView) {
         try {
-            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.latitute), String.valueOf(Parameter.longitude));
+            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LATITUDE), String.valueOf(Parameter.LONGITUDE));
             String city = weather.getJSONObject("location").getString("city");
-            String latitude = String.valueOf(Parameter.latitute);
-            String longitude = String.valueOf(Parameter.longitude);
+            String latitude = String.valueOf(Parameter.LATITUDE);
+            String longitude = String.valueOf(Parameter.LONGITUDE);
             String localTime = weather.getString("lastBuildDate");
             String windDirection = weather.getJSONObject("wind").getString("direction");
             String windSpeed = weather.getJSONObject("wind").getString("speed");
@@ -140,7 +137,7 @@ public class WeatherFragment extends Fragment {
             TextView atmospherePressureView = (TextView) rootView.findViewById(R.id.weatherAtmospherePressure);
             atmospherePressureView.setText(getString(R.string.weather_atmospherePressure) + ": ");
             TextView atmospherePressureValueView = (TextView) rootView.findViewById(R.id.weatherAtmospherePressureValue);
-            atmospherePressureValueView.setText(atmospherePressure + Unit.PRESSURE_UNIT);
+            atmospherePressureValueView.setText(atmospherePressure + Parameter.PRESSURE_UNIT);
 
             TextView descriptionView = (TextView) rootView.findViewById(R.id.weatherDescription);
             descriptionView.setText(getString(R.string.weather_description) + ": ");

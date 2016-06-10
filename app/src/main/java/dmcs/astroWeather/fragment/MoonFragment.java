@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import dmcs.astroWeather.Moon;
 import dmcs.astroWeather.R;
@@ -63,7 +62,7 @@ public class MoonFragment extends Fragment {
                                 setTextViews(rootView);
                             }
                         });
-                        Thread.sleep(Parameter.refreshIntervalInSec * 1000);
+                        Thread.sleep(Parameter.REFRESH_INTERVAL_IN_SEC * 1000);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

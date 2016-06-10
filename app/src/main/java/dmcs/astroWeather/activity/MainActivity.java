@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView coordinates = (TextView) findViewById(R.id.coordinates);
         if (coordinates != null) {
-            coordinates.setText(getString(R.string.coordinates) + " " + Parameter.latitute + ", " + Parameter.longitude);
+            coordinates.setText(getString(R.string.coordinates) + " " + Parameter.LATITUDE + ", " + Parameter.LONGITUDE);
         }
 
         timeThread = createTimeThread();

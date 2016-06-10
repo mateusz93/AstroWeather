@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.location.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * Created by Mateusz on 2016-05-28.
  */
-public class DBHelper extends SQLiteOpenHelper {
+public class DBLocalization extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "androidDatabase.db3";
     public static final String LOCATION_TABLE_NAME = "localization";
@@ -31,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
             "woeid VARCHAR, latitude VARCHAR, longitude VARCHAR, city VARCHAR, country VARCHAR, name VARCHAR, lastWeatherUpdate DATETIME DEFAULT CURRENT_TIMESTAMP);";
     private final String DROP_TABLES = "DROP TABLE IF EXISTS localization;";
 
-    public DBHelper(Context context) {
+    public DBLocalization(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
 

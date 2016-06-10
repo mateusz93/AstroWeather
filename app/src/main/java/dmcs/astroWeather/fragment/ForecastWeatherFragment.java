@@ -19,8 +19,6 @@ import java.io.IOException;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.util.Parameter;
-import dmcs.astroWeather.util.StringFormatter;
-import dmcs.astroWeather.util.Unit;
 import dmcs.astroWeather.util.WeatherDownloader;
 
 /**
@@ -78,7 +76,7 @@ public class ForecastWeatherFragment extends Fragment {
 
     private void setTextViews(final View rootView) {
         try {
-            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.latitute), String.valueOf(Parameter.longitude));
+            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LATITUDE), String.valueOf(Parameter.LONGITUDE));
 
             setIcons(rootView, weather);
             setDates(rootView, weather);
@@ -129,37 +127,37 @@ public class ForecastWeatherFragment extends Fragment {
 
         TextView forecastTemperature1 = (TextView) rootView.findViewById(R.id.forecastDay1Temperature);
         String boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weather, 1) + " - "
-                + getForecastHighTemperature(weather, 1) + Unit.TEMPERATURE_UNIT + "</b>";
+                + getForecastHighTemperature(weather, 1) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature1.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature2 = (TextView) rootView.findViewById(R.id.forecastDay2Temperature);
         boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weather, 2) + " - "
-                + getForecastHighTemperature(weather, 2) + Unit.TEMPERATURE_UNIT + "</b>";
+                + getForecastHighTemperature(weather, 2) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature2.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature3 = (TextView) rootView.findViewById(R.id.forecastDay3Temperature);
         boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weather, 3) + " - "
-                + getForecastHighTemperature(weather, 3) + Unit.TEMPERATURE_UNIT + "</b>";
+                + getForecastHighTemperature(weather, 3) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature3.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature4 = (TextView) rootView.findViewById(R.id.forecastDay4Temperature);
         boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weather, 4) + " - "
-                + getForecastHighTemperature(weather, 4) + Unit.TEMPERATURE_UNIT + "</b>";
+                + getForecastHighTemperature(weather, 4) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature4.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature5 = (TextView) rootView.findViewById(R.id.forecastDay5Temperature);
         boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weather, 5) + " - "
-                + getForecastHighTemperature(weather, 5) + Unit.TEMPERATURE_UNIT + "</b>";
+                + getForecastHighTemperature(weather, 5) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature5.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature6 = (TextView) rootView.findViewById(R.id.forecastDay6Temperature);
         boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weather, 6) + " - "
-                + getForecastHighTemperature(weather, 6) + Unit.TEMPERATURE_UNIT + "</b>";
+                + getForecastHighTemperature(weather, 6) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature6.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature7 = (TextView) rootView.findViewById(R.id.forecastDay7Temperature);
         boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weather, 7) + " - "
-                + getForecastHighTemperature(weather, 7) + Unit.TEMPERATURE_UNIT + "</b>";
+                + getForecastHighTemperature(weather, 7) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature7.setText(Html.fromHtml(boldedTemperatureValue));
     }
 

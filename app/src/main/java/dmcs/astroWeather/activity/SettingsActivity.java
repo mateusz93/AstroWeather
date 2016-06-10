@@ -46,9 +46,9 @@ public class SettingsActivity extends Activity {
     }
 
     private void setDefaultValues() {
-        latituteValue.setText(String.valueOf(Parameter.latitute));
-        longitudeValue.setText(String.valueOf(Parameter.longitude));
-        refreshingValue.setText(String.valueOf(Parameter.refreshIntervalInSec));
+        latituteValue.setText(String.valueOf(Parameter.LATITUDE));
+        longitudeValue.setText(String.valueOf(Parameter.LONGITUDE));
+        refreshingValue.setText(String.valueOf(Parameter.REFRESH_INTERVAL_IN_SEC));
     }
 
     private void initOnClicks() {
@@ -58,9 +58,9 @@ public class SettingsActivity extends Activity {
                 Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
                 try {
-                    Parameter.latitute = Double.valueOf(latituteValue.getText().toString());
-                    Parameter.longitude = Double.valueOf(longitudeValue.getText().toString());
-                    Parameter.refreshIntervalInSec = Integer.valueOf(refreshingValue.getText().toString());
+                    Parameter.LATITUDE = Double.valueOf(latituteValue.getText().toString());
+                    Parameter.LONGITUDE = Double.valueOf(longitudeValue.getText().toString());
+                    Parameter.REFRESH_INTERVAL_IN_SEC = Integer.valueOf(refreshingValue.getText().toString());
                     vb.vibrate(30);
                     Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
                     startActivity(intent);

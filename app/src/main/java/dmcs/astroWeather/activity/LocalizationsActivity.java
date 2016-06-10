@@ -13,11 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dmcs.astroWeather.R;
-import dmcs.astroWeather.db.DBHelper;
+import dmcs.astroWeather.db.DBLocalization;
 import dmcs.astroWeather.db.Localization;
 
 /**
@@ -26,14 +25,14 @@ import dmcs.astroWeather.db.Localization;
 public class LocalizationsActivity extends Activity {
 
     private final int DELETE_BUTTON_INTERVAL = 1_000_000;
-    private DBHelper database;
+    private DBLocalization database;
     private Button newLocationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.localizations);
-        database = new DBHelper(this);
+        database = new DBLocalization(this);
         generateLocationList();
         initOnClicks();
     }

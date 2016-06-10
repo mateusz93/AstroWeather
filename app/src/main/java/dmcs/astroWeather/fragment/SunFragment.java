@@ -8,11 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 import dmcs.astroWeather.R;
-import dmcs.astroWeather.SectionsPagerAdapter;
 import dmcs.astroWeather.Sun;
 import dmcs.astroWeather.util.AstroDateTimeFormatter;
 import dmcs.astroWeather.util.Parameter;
@@ -66,7 +62,7 @@ public class SunFragment extends Fragment {
                                 setTextViews(rootView);
                             }
                         });
-                        Thread.sleep(Parameter.refreshIntervalInSec * 1000);
+                        Thread.sleep(Parameter.REFRESH_INTERVAL_IN_SEC * 1000);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

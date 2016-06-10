@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import dmcs.astroWeather.R;
-import dmcs.astroWeather.db.DBHelper;
+import dmcs.astroWeather.db.DBLocalization;
 import dmcs.astroWeather.db.Localization;
 import dmcs.astroWeather.exception.IncorrectLocalizationException;
 import dmcs.astroWeather.util.WeatherDownloader;
@@ -28,14 +28,14 @@ import dmcs.astroWeather.util.WeatherDownloader;
  */
 public class NewLocalizationActivity extends Activity {
 
-    private DBHelper database;
+    private DBLocalization database;
     private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_localization);
-        database = new DBHelper(this);
+        database = new DBLocalization(this);
         extras = getIntent().getExtras();
         if (extras != null) {
             setFields(extras);
