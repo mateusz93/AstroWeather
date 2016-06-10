@@ -76,7 +76,7 @@ public class ForecastWeatherFragment extends Fragment {
 
     private void setTextViews(final View rootView) {
         try {
-            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LATITUDE), String.valueOf(Parameter.LONGITUDE));
+            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LOCALIZATION_LATITUDE), String.valueOf(Parameter.LOCALIZATION_LONGITUDE));
 
             setIcons(rootView, weather);
             setDates(rootView, weather);

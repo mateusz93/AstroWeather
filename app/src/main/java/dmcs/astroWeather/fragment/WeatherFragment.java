@@ -74,10 +74,10 @@ public class WeatherFragment extends Fragment {
 
     private void setTextViews(final View rootView) {
         try {
-            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LATITUDE), String.valueOf(Parameter.LONGITUDE));
+            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LOCALIZATION_LATITUDE), String.valueOf(Parameter.LOCALIZATION_LONGITUDE));
             String city = weather.getJSONObject("location").getString("city");
-            String latitude = String.valueOf(Parameter.LATITUDE);
-            String longitude = String.valueOf(Parameter.LONGITUDE);
+            String latitude = String.valueOf(Parameter.LOCALIZATION_LATITUDE);
+            String longitude = String.valueOf(Parameter.LOCALIZATION_LONGITUDE);
             String localTime = weather.getString("lastBuildDate");
             String windDirection = weather.getJSONObject("wind").getString("direction");
             String windSpeed = weather.getJSONObject("wind").getString("speed");

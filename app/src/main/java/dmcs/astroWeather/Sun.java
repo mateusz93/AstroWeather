@@ -27,7 +27,7 @@ public class Sun {
         astroDateTime.setTimezoneOffset((calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET)) / (3600 * 1000));
         astroDateTime.setDaylightSaving(false);
 
-        AstroCalculator.Location location = new AstroCalculator.Location(Parameter.LATITUDE, Parameter.LONGITUDE);
+        AstroCalculator.Location location = new AstroCalculator.Location(Parameter.LOCALIZATION_LATITUDE, Parameter.LOCALIZATION_LONGITUDE);
         astroCalculator = new AstroCalculator(astroDateTime, location);
         astroCalculator.setDateTime(astroDateTime);
         astroCalculator.setLocation(location);

@@ -19,6 +19,9 @@ import java.util.Date;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.SectionsPagerAdapter;
+import dmcs.astroWeather.db.DBLocalization;
+import dmcs.astroWeather.db.DBParameter;
+import dmcs.astroWeather.db.Localization;
 import dmcs.astroWeather.util.Parameter;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        updateParametersFromDatabase();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView coordinates = (TextView) findViewById(R.id.coordinates);
         if (coordinates != null) {
-            coordinates.setText(getString(R.string.coordinates) + " " + Parameter.LATITUDE + ", " + Parameter.LONGITUDE);
+            coordinates.setText(getString(R.string.coordinates) + " " + Parameter.LOCALIZATION_LATITUDE + ", " + Parameter.LOCALIZATION_LONGITUDE);
         }
 
         timeThread = createTimeThread();
@@ -119,8 +124,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        saveParametersToDatabase();
         timeThread.interrupt();
         getDelegate().onStop();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveParametersToDatabase();
+    }
+
+    private void saveParametersToDatabase() {
+        DBParameter dbParameter = new DBParameter(this);
+        dbParameter.updateParameter("LOCALIZATION_NAME", Parameter.LOCALIZATION_NAME);
+        dbParameter.updateParameter("PRESSURE_UNIT", Parameter.PRESSURE_UNIT);
+        dbParameter.updateParameter("REFRESH_INTERVAL_IN_SEC", String.valueOf(Parameter.REFRESH_INTERVAL_IN_SEC));
+        dbParameter.updateParameter("TEMPERATURE_UNIT", Parameter.TEMPERATURE_UNIT);
+        dbParameter.updateParameter("SPEED_UNIT", Parameter.SPEED_UNIT);
+    }
+
+    private void updateParametersFromDatabase() {
+        DBParameter dbParameter = new DBParameter(this);
+        DBLocalization dbLocalization = new DBLocalization(this);
+        Parameter.LOCALIZATION_NAME = dbParameter.findParamValueByParamName("LOCALIZATION_NAME");
+        Localization localization = dbLocalization.findLocationByName(Parameter.LOCALIZATION_NAME);
+        Parameter.LOCALIZATION_LATITUDE = Double.valueOf(localization.getLatitude());
+        Parameter.LOCALIZATION_LONGITUDE = Double.valueOf(localization.getLongitude());
+        Parameter.PRESSURE_UNIT = dbParameter.findParamValueByParamName("PRESSURE_UNIT");
+        Parameter.REFRESH_INTERVAL_IN_SEC = Integer.valueOf(dbParameter.findParamValueByParamName("REFRESH_INTERVAL_IN_SEC"));
+        Parameter.TEMPERATURE_UNIT = dbParameter.findParamValueByParamName("TEMPERATURE_UNIT");
+        Parameter.SPEED_UNIT = dbParameter.findParamValueByParamName("SPEED_UNIT");
+    }
 }
