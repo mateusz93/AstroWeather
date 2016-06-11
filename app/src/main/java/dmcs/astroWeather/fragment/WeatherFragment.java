@@ -14,8 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import dmcs.astroWeather.R;
+import dmcs.astroWeather.db.DBLocalization;
+import dmcs.astroWeather.db.Localization;
 import dmcs.astroWeather.util.Parameter;
 import dmcs.astroWeather.util.WeatherDownloader;
 
@@ -25,6 +29,7 @@ import dmcs.astroWeather.util.WeatherDownloader;
 public class WeatherFragment extends Fragment {
 
     private Thread thread;
+    private DBLocalization db;
 
     public WeatherFragment() {
     }
@@ -44,6 +49,7 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.weather_fragment, container, false);
         createThread(rootView);
+        db = new DBLocalization(getContext());
         //thread.start();
         return rootView;
     }
@@ -74,7 +80,14 @@ public class WeatherFragment extends Fragment {
 
     private void setTextViews(final View rootView) {
         try {
-            JSONObject weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LOCALIZATION_LATITUDE), String.valueOf(Parameter.LOCALIZATION_LONGITUDE));
+            JSONObject weather;
+            if (isWeatherCurrent()) {
+                weather = getWeatherFromDB();
+            } else {
+                weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LOCALIZATION_LATITUDE), String.valueOf(Parameter.LOCALIZATION_LONGITUDE));
+                saveToDB(weather);
+            }
+
             String city = weather.getJSONObject("location").getString("city");
             String latitude = String.valueOf(Parameter.LOCALIZATION_LATITUDE);
             String longitude = String.valueOf(Parameter.LOCALIZATION_LONGITUDE);
@@ -148,6 +161,40 @@ public class WeatherFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void saveToDB(JSONObject weather) {
+        try {
+            Localization localization = db.findLocationByName(Parameter.LOCALIZATION_NAME);
+            localization.setWeather(weather.toString());
+            localization.setForecast(weather.getJSONObject("item").getJSONArray("forecast").toString());
+            localization.setLastUpdate(String.valueOf(new Date().getTime()));
+            db.updateLocation(localization);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JSONObject getWeatherFromDB() {
+        Localization localization = db.findLocationByName(Parameter.LOCALIZATION_NAME);
+        JSONObject weather = null;
+        try {
+            weather = new JSONObject(localization.getWeather());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return weather;
+    }
+
+    private boolean isWeatherCurrent() {
+        Localization localization = db.findLocationByName(Parameter.LOCALIZATION_NAME);
+        long oneHour = 3_600_000;
+        long now = new Date().getTime();
+        long localizationTime = Long.valueOf(localization.getLastUpdate());
+        if (localizationTime + oneHour > now) {
+            return true;
+        }
+        return false;
     }
 
     private String getFormattedTime(String localTime) {

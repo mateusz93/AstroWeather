@@ -1,5 +1,7 @@
 package dmcs.astroWeather.db;
 
+import java.sql.Timestamp;
+
 /**
  * Created by Mateusz on 2016-05-28.
  */
@@ -12,6 +14,9 @@ public class Localization {
     private String city;
     private String country;
     private String name;
+    private String weather;
+    private String forecast;
+    private String lastUpdate;
 
     public String getId() {
         return id;
@@ -67,5 +72,29 @@ public class Localization {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
+    }
+
+    public String getForecast() {
+        return forecast;
+    }
+
+    public void setForecast(String forecast) {
+        this.forecast = forecast;
+    }
+
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(String lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }

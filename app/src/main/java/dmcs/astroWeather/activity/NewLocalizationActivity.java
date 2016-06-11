@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Date;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.db.DBLocalization;
@@ -176,6 +177,9 @@ public class NewLocalizationActivity extends Activity {
             String longitude = jsonWeather.getJSONObject("item").getString("long");
             String city = jsonWeather.getJSONObject("location").getString("city");
             String country = jsonWeather.getJSONObject("location").getString("country");
+            String weather = jsonWeather.toString();
+            String weatherForecast = jsonWeather.getJSONObject("item").getJSONArray("forecast").toString();
+            String lastUpdate = String.valueOf(new Date().getTime());
 
             Localization localization = new Localization();
             localization.setName(name);
@@ -184,6 +188,9 @@ public class NewLocalizationActivity extends Activity {
             localization.setLongitude(longitude);
             localization.setCity(city);
             localization.setCountry(country);
+            localization.setWeather(weather);
+            localization.setForecast(weatherForecast);
+            localization.setLastUpdate(lastUpdate);
 
             if (extras != null) {
                 String localizationId = database.findLocationByName(name).getId();

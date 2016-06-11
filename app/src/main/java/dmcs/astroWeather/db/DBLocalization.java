@@ -7,7 +7,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,10 +26,13 @@ public class DBLocalization extends SQLiteOpenHelper {
     public static final String LOCATION_COLUMN_CITY = "city";
     public static final String LOCATION_COLUMN_COUNTRY = "country";
     public static final String LOCATION_COLUMN_NAME = "name";
+    public static final String LOCATION_COLUMN_WEATHER = "weather";
+    public static final String LOCATION_COLUMN_FORECAST = "forecast";
     public static final String LOCATION_COLUMN_LAST_WEATHER_UPDATE = "lastWeatherUpdate";
 
     private final String CREATE_TABLES = "CREATE TABLE IF NOT EXISTS localization(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            "woeid VARCHAR, latitude VARCHAR, longitude VARCHAR, city VARCHAR, country VARCHAR, name VARCHAR, lastWeatherUpdate DATETIME DEFAULT CURRENT_TIMESTAMP);";
+            "woeid VARCHAR, latitude VARCHAR, longitude VARCHAR, city VARCHAR, country VARCHAR, name VARCHAR, " +
+            "lastWeatherUpdate DATETIME DEFAULT CURRENT_TIMESTAMP, weather VARCHAR, forecast, VARCHAR);";
     private final String DROP_TABLES = "DROP TABLE IF EXISTS localization;";
 
     public DBLocalization(Context context) {
@@ -43,12 +48,6 @@ public class DBLocalization extends SQLiteOpenHelper {
     private void generateData(SQLiteDatabase db) {
         db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Lodz', 'lodz', 'pl')");
         db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Poznan', 'poznan', 'pl')");
-        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Wroclaw', 'wroclaw', 'pl')");
-        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Warszawa', 'warszawa', 'pl')");
-        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Sopot', 'sopot', 'pl')");
-        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Katowice', 'katowice', 'pl')");
-        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Kraków', 'krakow', 'pl')");
-        db.execSQL("INSERT INTO localization (name, city, country) VALUES ('Częstochowa', 'czestochowa', 'pl')");
     }
 
     @Override
@@ -57,7 +56,8 @@ public class DBLocalization extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertLocation(String name, String woeid, String latitude, String longitude, String city, String country) {
+    public boolean insertLocation(String name, String woeid, String latitude, String longitude,
+                                  String city, String country, String weather, String forecast, String lastUpdate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(LOCATION_COLUMN_NAME, name);
@@ -66,6 +66,9 @@ public class DBLocalization extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
         contentValues.put(LOCATION_COLUMN_CITY, city);
         contentValues.put(LOCATION_COLUMN_COUNTRY, country);
+        contentValues.put(LOCATION_COLUMN_WEATHER, weather);
+        contentValues.put(LOCATION_COLUMN_FORECAST, forecast);
+        contentValues.put(LOCATION_COLUMN_LAST_WEATHER_UPDATE, lastUpdate);
         db.insert(LOCATION_TABLE_NAME, null, contentValues);
         return true;
     }
@@ -79,11 +82,15 @@ public class DBLocalization extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, localization.getLongitude());
         contentValues.put(LOCATION_COLUMN_CITY, localization.getCity());
         contentValues.put(LOCATION_COLUMN_COUNTRY, localization.getCountry());
+        contentValues.put(LOCATION_COLUMN_WEATHER, localization.getWeather());
+        contentValues.put(LOCATION_COLUMN_FORECAST, localization.getForecast());
+        contentValues.put(LOCATION_COLUMN_LAST_WEATHER_UPDATE, localization.getLastUpdate());
         db.insert(LOCATION_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public boolean updateLocation(Integer id, String name, String woeid, String latitude, String longitude, String city, String country) {
+    public boolean updateLocation(Integer id, String name, String woeid, String latitude, String longitude,
+                                  String city, String country, String weather, String forecast, String lastUpdate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(LOCATION_COLUMN_NAME, name);
@@ -92,6 +99,9 @@ public class DBLocalization extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
         contentValues.put(LOCATION_COLUMN_CITY, city);
         contentValues.put(LOCATION_COLUMN_COUNTRY, country);
+        contentValues.put(LOCATION_COLUMN_WEATHER, weather);
+        contentValues.put(LOCATION_COLUMN_FORECAST, forecast);
+        contentValues.put(LOCATION_COLUMN_LAST_WEATHER_UPDATE, lastUpdate);
         db.update(LOCATION_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
         return true;
     }
@@ -105,6 +115,9 @@ public class DBLocalization extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_LONGITUDE, localization.getLongitude());
         contentValues.put(LOCATION_COLUMN_CITY, localization.getCity());
         contentValues.put(LOCATION_COLUMN_COUNTRY, localization.getCountry());
+        contentValues.put(LOCATION_COLUMN_WEATHER, localization.getWeather());
+        contentValues.put(LOCATION_COLUMN_FORECAST, localization.getForecast());
+        contentValues.put(LOCATION_COLUMN_LAST_WEATHER_UPDATE, localization.getLastUpdate());
         db.update(LOCATION_TABLE_NAME, contentValues, "id = ? ", new String[]{localization.getId()});
         return true;
     }
@@ -122,7 +135,9 @@ public class DBLocalization extends SQLiteOpenHelper {
             localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
             localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
             localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
-
+            localization.setWeather(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WEATHER)));
+            localization.setForecast(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_FORECAST)));
+            localization.setLastUpdate(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LAST_WEATHER_UPDATE)));
             return localization;
         } else {
             return null;
@@ -142,7 +157,9 @@ public class DBLocalization extends SQLiteOpenHelper {
             localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
             localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
             localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
-
+            localization.setWeather(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WEATHER)));
+            localization.setForecast(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_FORECAST)));
+            localization.setLastUpdate(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LAST_WEATHER_UPDATE)));
             return localization;
         } else {
             return null;
@@ -162,7 +179,9 @@ public class DBLocalization extends SQLiteOpenHelper {
             localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
             localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
             localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
-
+            localization.setWeather(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WEATHER)));
+            localization.setForecast(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_FORECAST)));
+            localization.setLastUpdate(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LAST_WEATHER_UPDATE)));
             return localization;
         } else {
             return null;
@@ -186,6 +205,9 @@ public class DBLocalization extends SQLiteOpenHelper {
             localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
             localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
             localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
+            localization.setWeather(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WEATHER)));
+            localization.setForecast(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_FORECAST)));
+            localization.setLastUpdate(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LAST_WEATHER_UPDATE)));
             localizations.add(localization);
             cursor.moveToNext();
         }
