@@ -14,6 +14,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -23,6 +27,7 @@ import dmcs.astroWeather.db.DBLocalization;
 import dmcs.astroWeather.db.DBParameter;
 import dmcs.astroWeather.db.Localization;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.WeatherDownloader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -118,7 +123,35 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_refresh) {
+            Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vb.vibrate(30);
+            updateWeather();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateWeather() {
+        DBParameter dbParameter = new DBParameter(this);
+        DBLocalization dbLocalization = new DBLocalization(this);
+        String localizationName = dbParameter.findParamValueByParamName("LOCALIZATION_NAME");
+        Localization localization = dbLocalization.findLocationByName(localizationName);
+        try {
+            JSONObject weather = WeatherDownloader.getWeatherByWoeid(localization.getWoeid());
+            localization.setWeather(weather.toString());
+            localization.setForecast(weather.getJSONObject("item").getJSONArray("forecast").toString());
+            localization.setLastUpdate(String.valueOf(new Date().getTime()));
+        } catch (IOException | JSONException e) {
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.updateWeatherProblem), Toast.LENGTH_LONG).show();
+            return;
+        }
+        dbLocalization.updateLocation(localization);
+        Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherUpdated), Toast.LENGTH_LONG).show();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
     @Override

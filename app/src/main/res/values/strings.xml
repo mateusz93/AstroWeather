@@ -2,6 +2,7 @@
     <string name="app_name">AstroWeather</string>
     <string name="action_settings">Settings</string>
     <string name="action_localizations">Localizations</string>
+    <string name="action_refresh">Refresh</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="localizationList">Your added localizations</string>
@@ -12,6 +13,8 @@
     <string name="localizationSaved">New localization saved correctly</string>
     <string name="localizationDeleted">Localization deleted correctly</string>
     <string name="localizationNotDeleted">Localization can not be deleted</string>
+    <string name="updateWeatherProblem">Weather cannot be updated!</string>
+    <string name="weatherUpdated">Weather updated correctly</string>
     <string name="sun">Sun</string>
     <string name="moon">Moon</string>
     <string name="weather">Weather</string>
