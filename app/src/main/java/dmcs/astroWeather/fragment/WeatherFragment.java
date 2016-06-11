@@ -92,6 +92,7 @@ public class WeatherFragment extends Fragment {
             String city = weather.getJSONObject("location").getString("city");
             String latitude = String.valueOf(Parameter.LOCALIZATION_LATITUDE);
             String longitude = String.valueOf(Parameter.LOCALIZATION_LONGITUDE);
+            String temperature = weather.getJSONObject("item").getJSONObject("condition").getString("temp");
             String localTime = weather.getString("lastBuildDate");
             String windDirection = weather.getJSONObject("wind").getString("direction");
             String windSpeed = weather.getJSONObject("wind").getString("speed");
@@ -102,7 +103,9 @@ public class WeatherFragment extends Fragment {
             if (Parameter.SPEED_UNIT.equals("mi/h")) {
                 windSpeed = String.valueOf(UnitConverter.convertKilometerToMiles(Double.valueOf(windSpeed)));
             }
-
+            if (Parameter.TEMPERATURE_UNIT.equals("°K")) {
+                temperature = String.valueOf(UnitConverter.convertCelsiusToKelvin(Double.valueOf(temperature)));
+            }
             ImageView weatherIcon = (ImageView) rootView.findViewById(R.id.weatherIcon);
             String iconNumber = getIconNumberFromDescription(description);
             int id = getResources().getIdentifier("icon_" + iconNumber, "drawable", getContext().getPackageName());
@@ -125,6 +128,11 @@ public class WeatherFragment extends Fragment {
             longitudeView.setText(getString(R.string.weather_longitude) + ": ");
             TextView longitudeValueView = (TextView) rootView.findViewById(R.id.weatherLongitudeValue);
             longitudeValueView.setText(longitude);
+
+            TextView temperatureView = (TextView) rootView.findViewById(R.id.weatherTemperature);
+            temperatureView.setText(getString(R.string.weather_temperature) + ": ");
+            TextView temperatureViewView = (TextView) rootView.findViewById(R.id.weatherTemperatureValue);
+            temperatureViewView.setText(temperature + Parameter.TEMPERATURE_UNIT);
 
             TextView localTimeView = (TextView) rootView.findViewById(R.id.weatherLocalTime);
             localTimeView.setText(getString(R.string.weather_localTime) + ": ");

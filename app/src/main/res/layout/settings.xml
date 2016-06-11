@@ -165,6 +165,10 @@
                 android:layout_marginTop="20dp"
                 android:background="@android:color/white"
                 android:text="@string/settings.save" />
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="30px" />
         </LinearLayout>
     </ScrollView>
 

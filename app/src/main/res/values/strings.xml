@@ -57,6 +57,7 @@
     <string name="weather.city">City</string>
     <string name="weather.longitude">Longitude</string>
     <string name="weather.latitude">Latitute</string>
+    <string name="weather.temperature">Temperature</string>
     <string name="weather.localTime">Weather time</string>
     <string name="weather.windDirection">Wind direction</string>
     <string name="weather.windSpeed">Wind speed</string>
