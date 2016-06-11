@@ -21,6 +21,7 @@ import dmcs.astroWeather.R;
 import dmcs.astroWeather.db.DBLocalization;
 import dmcs.astroWeather.db.Localization;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.UnitConverter;
 import dmcs.astroWeather.util.WeatherDownloader;
 
 /**
@@ -98,6 +99,9 @@ public class WeatherFragment extends Fragment {
             String atmosphereVisibility = weather.getJSONObject("atmosphere").getString("visibility");
             String atmospherePressure = weather.getJSONObject("atmosphere").getString("pressure");
             String description = weather.getJSONObject("item").getString("description");
+            if (Parameter.SPEED_UNIT.equals("mi/h")) {
+                windSpeed = String.valueOf(UnitConverter.convertKilometerToMiles(Double.valueOf(windSpeed)));
+            }
 
             ImageView weatherIcon = (ImageView) rootView.findViewById(R.id.weatherIcon);
             String iconNumber = getIconNumberFromDescription(description);
@@ -135,7 +139,7 @@ public class WeatherFragment extends Fragment {
             TextView windSpeedView = (TextView) rootView.findViewById(R.id.weatherWindSpeed);
             windSpeedView.setText(getString(R.string.weather_windSpeed) + ": ");
             TextView windSpeedValueView = (TextView) rootView.findViewById(R.id.weatherWindSpeedValue);
-            windSpeedValueView.setText(windSpeed);
+            windSpeedValueView.setText(windSpeed + Parameter.SPEED_UNIT);
 
             TextView atmosphereHumidityView = (TextView) rootView.findViewById(R.id.weatherAtmosphereHumidity);
             atmosphereHumidityView.setText(getString(R.string.weather_atmosphereHumidity) + ": ");

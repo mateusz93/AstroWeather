@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBParameter extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "androidDatabase.db22";
+    public static final String DATABASE_NAME = "androidDatabase.db25";
     public static final String PARAMETER_TABLE_NAME = "Parameter";
     public static final String PARAMETER_COLUMN_ID = "id";
     public static final String PARAMETER_COLUMN_PARAM_NAME = "paramName";
@@ -48,7 +48,7 @@ public class DBParameter extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('LOCALIZATION_NAME', 'Lodz')");
         db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('SPEED_UNIT', 'km/h')");
         db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('PRESSURE_UNIT', 'mb')");
-        db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('TEMPERATURE_UNIT', 'C')");
+        db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('TEMPERATURE_UNIT', '°C')");
         db.execSQL("INSERT INTO localization (name, latitude, longitude, city, country) VALUES ('Lodz', '51', '19.5', 'lodz', 'pl')");
     }
 

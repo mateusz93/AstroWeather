@@ -18,6 +18,7 @@ import dmcs.astroWeather.R;
 import dmcs.astroWeather.db.DBLocalization;
 import dmcs.astroWeather.db.Localization;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.UnitConverter;
 
 /**
  * Created by Mateusz on 2016-06-08.
@@ -129,38 +130,38 @@ public class ForecastWeatherFragment extends Fragment {
         final String TEMPERATURE = getResources().getString(R.string.forecast_temperature);
 
         TextView forecastTemperature1 = (TextView) rootView.findViewById(R.id.forecastDay1Temperature);
-        String boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weatherForecast, 1) + " - "
-                + getForecastHighTemperature(weatherForecast, 1) + Parameter.TEMPERATURE_UNIT + "</b>";
+        String boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 1))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 1)) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature1.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature2 = (TextView) rootView.findViewById(R.id.forecastDay2Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weatherForecast, 2) + " - "
-                + getForecastHighTemperature(weatherForecast, 2) + Parameter.TEMPERATURE_UNIT + "</b>";
+        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 2))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 2)) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature2.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature3 = (TextView) rootView.findViewById(R.id.forecastDay3Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weatherForecast, 3) + " - "
-                + getForecastHighTemperature(weatherForecast, 3) + Parameter.TEMPERATURE_UNIT + "</b>";
+        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 3))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 3)) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature3.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature4 = (TextView) rootView.findViewById(R.id.forecastDay4Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weatherForecast, 4) + " - "
-                + getForecastHighTemperature(weatherForecast, 4) + Parameter.TEMPERATURE_UNIT + "</b>";
+        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 4))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 4)) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature4.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature5 = (TextView) rootView.findViewById(R.id.forecastDay5Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weatherForecast, 5) + " - "
-                + getForecastHighTemperature(weatherForecast, 5) + Parameter.TEMPERATURE_UNIT + "</b>";
+        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 5))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 5)) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature5.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature6 = (TextView) rootView.findViewById(R.id.forecastDay6Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weatherForecast, 6) + " - "
-                + getForecastHighTemperature(weatherForecast, 6) + Parameter.TEMPERATURE_UNIT + "</b>";
+        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 6))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 6)) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature6.setText(Html.fromHtml(boldedTemperatureValue));
 
         TextView forecastTemperature7 = (TextView) rootView.findViewById(R.id.forecastDay7Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getForecastLowTemperature(weatherForecast, 7) + " - "
-                + getForecastHighTemperature(weatherForecast, 7) + Parameter.TEMPERATURE_UNIT + "</b>";
+        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 7))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 7)) + Parameter.TEMPERATURE_UNIT + "</b>";
         forecastTemperature7.setText(Html.fromHtml(boldedTemperatureValue));
     }
 
@@ -264,6 +265,13 @@ public class ForecastWeatherFragment extends Fragment {
             e.printStackTrace();
             return "";
         }
+    }
+
+    private String getConverterTemperature(String temperature) {
+        if (Parameter.TEMPERATURE_UNIT.equals("°K")) {
+            return String.valueOf(UnitConverter.convertCelsiusToKelvin(Double.valueOf(temperature)));
+        }
+        return temperature;
     }
 
 }
