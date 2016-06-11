@@ -17,7 +17,9 @@ import java.util.List;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.db.DBLocalization;
+import dmcs.astroWeather.db.DBParameter;
 import dmcs.astroWeather.db.Localization;
+import dmcs.astroWeather.util.Parameter;
 
 /**
  * Created by Mateusz on 2016-05-28.
@@ -26,6 +28,7 @@ public class LocalizationsActivity extends Activity {
 
     private final int DELETE_BUTTON_INTERVAL = 1_000_000;
     private DBLocalization database;
+    private DBParameter dbParameter;
     private Button newLocationButton;
 
     @Override
@@ -33,6 +36,7 @@ public class LocalizationsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.localizations);
         database = new DBLocalization(this);
+        dbParameter = new DBParameter(this);
         generateLocationList();
         initOnClicks();
     }
@@ -73,13 +77,42 @@ public class LocalizationsActivity extends Activity {
             public void onClick(View v) {
                 Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vb.vibrate(50);
-                database.deleteLocation(deleteButtonId - DELETE_BUTTON_INTERVAL);
-                Toast.makeText(LocalizationsActivity.this, getResources().getString(R.string.localizationDeleted), Toast.LENGTH_LONG).show();
+                List<Localization> localizations = database.findAllLocation();
+                Localization localization = database.findLocationById(deleteButtonId - DELETE_BUTTON_INTERVAL);
+
+                deleteLocalization(localizations, deleteButtonId);
+                updateDefaultLocalization(localizations, localization);
+
                 finish();
                 startActivity(getIntent());
             }
         });
     }
+
+    private void updateDefaultLocalization(List<Localization> localizations, Localization localization) {
+        if (localization.getName().equals(Parameter.LOCALIZATION_NAME)) {
+            for (Localization l : localizations) {
+                if (!l.getName().equals(Parameter.LOCALIZATION_NAME)) {
+                    Parameter.LOCALIZATION_NAME = l.getName();
+                    Parameter.LOCALIZATION_LATITUDE = Double.parseDouble(l.getLatitude());
+                    Parameter.LOCALIZATION_LONGITUDE = Double.parseDouble(l.getLongitude());
+
+                    dbParameter.updateParameter("LOCALIZATION_NAME", Parameter.LOCALIZATION_NAME);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void deleteLocalization(List<Localization> localizations, final int deleteButtonId) {
+        if (localizations.size() > 1) {
+            database.deleteLocation(deleteButtonId - DELETE_BUTTON_INTERVAL);
+            Toast.makeText(LocalizationsActivity.this, getResources().getString(R.string.localizationDeleted), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(LocalizationsActivity.this, getResources().getString(R.string.localizationNotDeleted), Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     private void setEditButtonsOnClick(Button editButton, final int editButtonId) {
         editButton.setOnClickListener(new View.OnClickListener() {

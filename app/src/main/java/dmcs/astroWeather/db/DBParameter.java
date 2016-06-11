@@ -11,15 +11,19 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBParameter extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "androidDatabase.db3";
+    public static final String DATABASE_NAME = "androidDatabase.db22";
     public static final String PARAMETER_TABLE_NAME = "Parameter";
     public static final String PARAMETER_COLUMN_ID = "id";
     public static final String PARAMETER_COLUMN_PARAM_NAME = "paramName";
     public static final String PARAMETER_COLUMN_PARAM_VALUE = "paramValue";
 
-    private final String CREATE_TABLES = "CREATE TABLE IF NOT EXISTS Parameter(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+    private final String CREATE_LOCALIZATION_TABLE = "CREATE TABLE IF NOT EXISTS Parameter(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
             "paramName VARCHAR, paramValue VARCHAR);";
-    private final String DROP_TABLES = "DROP TABLE IF EXISTS Parameter;";
+    private final String CREATE_PARAMETER_TABLE = "CREATE TABLE IF NOT EXISTS localization(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+            "woeid VARCHAR, latitude VARCHAR, longitude VARCHAR, city VARCHAR, country VARCHAR, name VARCHAR, " +
+            "lastWeatherUpdate VARCHAR, weather VARCHAR, forecast, VARCHAR);";
+    private final String DROP_LOCALIZATION_TABLE = "DROP TABLE IF EXISTS localization;";
+    private final String DROP_PARAMETER_TABLE = "DROP TABLE IF EXISTS Parameter;";
 
     public DBParameter(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -27,13 +31,15 @@ public class DBParameter extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLES);
+        db.execSQL(CREATE_LOCALIZATION_TABLE);
+        db.execSQL(CREATE_PARAMETER_TABLE);
         generateData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(DROP_TABLES);
+        db.execSQL(DROP_LOCALIZATION_TABLE);
+        db.execSQL(DROP_PARAMETER_TABLE);
         onCreate(db);
     }
 
@@ -43,6 +49,7 @@ public class DBParameter extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('SPEED_UNIT', 'km/h')");
         db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('PRESSURE_UNIT', 'mb')");
         db.execSQL("INSERT INTO Parameter (paramName, paramValue) VALUES ('TEMPERATURE_UNIT', 'C')");
+        db.execSQL("INSERT INTO localization (name, latitude, longitude, city, country) VALUES ('Lodz', '51', '19.5', 'lodz', 'pl')");
     }
 
     public boolean updateParameter(String paramName, String paramValue) {

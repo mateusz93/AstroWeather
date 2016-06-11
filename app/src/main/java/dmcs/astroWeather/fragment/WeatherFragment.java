@@ -49,7 +49,6 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.weather_fragment, container, false);
         createThread(rootView);
-        db = new DBLocalization(getContext());
         //thread.start();
         return rootView;
     }
@@ -74,6 +73,7 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DBLocalization(getContext());
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
@@ -190,9 +190,11 @@ public class WeatherFragment extends Fragment {
         Localization localization = db.findLocationByName(Parameter.LOCALIZATION_NAME);
         long oneHour = 3_600_000;
         long now = new Date().getTime();
-        long localizationTime = Long.valueOf(localization.getLastUpdate());
-        if (localizationTime + oneHour > now) {
-            return true;
+        if (localization.getLastUpdate() != null) {
+            long localizationTime = Long.valueOf(localization.getLastUpdate());
+            if (localizationTime + oneHour > now) {
+                return true;
+            }
         }
         return false;
     }
@@ -218,7 +220,7 @@ public class WeatherFragment extends Fragment {
     }
 
     private String getIconNumberFromDescription(String description) {
-        for (int i = 0; i < 48; ++i) {
+        for (int i = 48; i >= 0; --i) {
             if (description.contains("" + i + ".gif")) {
                 return "" + i;
             }

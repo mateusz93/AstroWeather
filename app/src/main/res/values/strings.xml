@@ -11,6 +11,7 @@
     <string name="incorrectLocalization">Incorrect localization data</string>
     <string name="localizationSaved">New localization saved correctly</string>
     <string name="localizationDeleted">Localization deleted correctly</string>
+    <string name="localizationNotDeleted">Localization can not be deleted</string>
     <string name="sun">Sun</string>
     <string name="moon">Moon</string>
     <string name="weather">Weather</string>
@@ -30,6 +31,8 @@
     <string name="moon.NextFullMoon">Next full moon</string>
     <string name="moon.NextNewMoon">Next new moon</string>
 
+    <string name="settings.city">City</string>
+    <string name="settings.select">Select</string>
     <string name="settings.latitute">Latitute</string>
     <string name="settings.longitude">Longitude</string>
     <string name="settings.refreshing">Refreshing in sec</string>
@@ -45,7 +48,7 @@
     <string name="weather.city">City</string>
     <string name="weather.longitude">Longitude</string>
     <string name="weather.latitude">Latitute</string>
-    <string name="weather.localTime">Local time</string>
+    <string name="weather.localTime">Weather time</string>
     <string name="weather.windDirection">Wind direction</string>
     <string name="weather.windSpeed">Wind speed</string>
     <string name="weather.atmosphereHumidity">Humidity</string>

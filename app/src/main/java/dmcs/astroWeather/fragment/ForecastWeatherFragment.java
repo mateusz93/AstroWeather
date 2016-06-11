@@ -45,7 +45,6 @@ public class ForecastWeatherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.forecast_weather_fragment, container, false);
         createThread(rootView);
-        db = new DBLocalization(getContext());
         //thread.start();
         return rootView;
     }
@@ -70,6 +69,7 @@ public class ForecastWeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        db = new DBLocalization(getContext());
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }

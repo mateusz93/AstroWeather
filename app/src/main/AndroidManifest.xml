@@ -32,6 +32,10 @@
             android:name=".activity.NewLocalizationActivity"
             android:label="@string/app_name">
         </activity>
+        <activity
+            android:name=".activity.LocalizationListActivity"
+            android:label="@string/app_name">
+        </activity>
     </application>
 
 </manifest>
