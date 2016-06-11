@@ -9,7 +9,7 @@
     <string name="newLocalization">new</string>
     <string name="coordinates">Coordinates:</string>
     <string name="internetAccess">Application can use internet</string>
-    <string name="incorrectLocalization">Incorrect localization data</string>
+    <string name="incorrectLocalization">Incorrect localization data or the internet is off</string>
     <string name="localizationSaved">New localization saved correctly</string>
     <string name="localizationDeleted">Localization deleted correctly</string>
     <string name="localizationNotDeleted">Localization can not be deleted</string>

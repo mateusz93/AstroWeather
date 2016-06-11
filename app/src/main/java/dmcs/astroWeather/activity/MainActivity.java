@@ -159,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
             localization.setForecast(weather.getJSONObject("item").getJSONArray("forecast").toString());
             localization.setLastUpdate(String.valueOf(new Date().getTime()));
         } catch (IOException | JSONException e) {
+            Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+            vb.vibrate(300);
             Toast.makeText(MainActivity.this, getResources().getString(R.string.updateWeatherProblem), Toast.LENGTH_LONG).show();
             return;
         }
