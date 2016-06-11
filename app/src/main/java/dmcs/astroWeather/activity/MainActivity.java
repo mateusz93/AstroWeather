@@ -64,7 +64,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        Toast.makeText(MainActivity.this, getResources().getString(R.string.internetAccess), Toast.LENGTH_LONG).show();
+        showOutdatedWeatherInfo();
+    }
+
+    private void showOutdatedWeatherInfo() {
+        DBLocalization dbLocalization = new DBLocalization(this);
+        Localization localization = dbLocalization.findLocationByName(Parameter.LOCALIZATION_NAME);
+        long oneHour = 3_600_000;
+        long now = new Date().getTime();
+        if (localization.getLastUpdate() != null) {
+            long localizationTime = Long.valueOf(localization.getLastUpdate());
+            if (localizationTime + oneHour < now) {
+                Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherOutdated), Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherOutdated), Toast.LENGTH_LONG).show();
+        }
     }
 
     @NonNull

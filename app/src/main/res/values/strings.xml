@@ -15,6 +15,7 @@
     <string name="localizationNotDeleted">Localization can not be deleted</string>
     <string name="updateWeatherProblem">Weather cannot be updated!</string>
     <string name="weatherUpdated">Weather updated correctly</string>
+    <string name="weatherOutdated">Weather outdated, please turn on the internet and click refresh button!</string>
     <string name="sun">Sun</string>
     <string name="moon">Moon</string>
     <string name="weather">Weather</string>
