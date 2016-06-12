@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import dmcs.astroWeather.R;
@@ -81,12 +80,16 @@ public class WeatherFragment extends Fragment {
 
     private void setTextViews(final View rootView) {
         try {
-            JSONObject weather;
+            JSONObject weather = null;
             if (isWeatherCurrent()) {
                 weather = getWeatherFromDB();
             } else {
-                weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LOCALIZATION_LATITUDE), String.valueOf(Parameter.LOCALIZATION_LONGITUDE));
-                saveToDB(weather);
+                try {
+                    weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(String.valueOf(Parameter.LOCALIZATION_LATITUDE), String.valueOf(Parameter.LOCALIZATION_LONGITUDE));
+                    saveToDB(weather);
+                } catch (IOException | JSONException e) {
+                    weather = getWeatherFromDB();
+                }
             }
 
             String city = weather.getJSONObject("location").getString("city");
@@ -168,8 +171,6 @@ public class WeatherFragment extends Fragment {
             descriptionView.setText(getString(R.string.weather_description) + ": ");
             TextView descriptionValueView = (TextView) rootView.findViewById(R.id.weatherDescriptionValue);
             descriptionValueView.setText(description);
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }
