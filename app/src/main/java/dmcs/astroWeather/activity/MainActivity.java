@@ -26,6 +26,10 @@ import dmcs.astroWeather.SectionsPagerAdapter;
 import dmcs.astroWeather.db.DBLocalization;
 import dmcs.astroWeather.db.DBParameter;
 import dmcs.astroWeather.db.Localization;
+import dmcs.astroWeather.fragment.ForecastWeatherFragment;
+import dmcs.astroWeather.fragment.MoonFragment;
+import dmcs.astroWeather.fragment.SunFragment;
+import dmcs.astroWeather.fragment.WeatherFragment;
 import dmcs.astroWeather.util.Parameter;
 import dmcs.astroWeather.util.WeatherDownloader;
 
@@ -61,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.setupWithViewPager(viewPager);
             }
         } else {
-
+            SunFragment.newInstance(1);
+            MoonFragment.newInstance(2);
+            WeatherFragment.newInstance(3);
+            ForecastWeatherFragment.newInstance(4);
         }
 
         showOutdatedWeatherInfo();
