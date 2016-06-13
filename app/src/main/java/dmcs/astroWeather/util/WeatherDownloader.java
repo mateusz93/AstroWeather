@@ -17,6 +17,7 @@ public class WeatherDownloader {
     public static String getWoeidByCityAndCountry(String city, String country) throws IOException, JSONException {
         StringBuilder result = new StringBuilder();
         URL url = null;
+        city = city.replace(" ", "%20");
         url = new URL("https://query.yahooapis.com/v1/public/yql?q=" +
                 "select%20*%20from%20geo.places(1)%20where%20text=%22" + city +
                 ",%20" + country + "%22&format=json");
@@ -28,6 +29,7 @@ public class WeatherDownloader {
             result.append(line);
         }
         rd.close();
+        city = city.replace("%20", " ");
         JSONObject json = new JSONObject(result.toString());
         if (!city.equalsIgnoreCase(json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("name"))) {
             throw new JSONException("IncorrectCityOrCountry");
