@@ -76,125 +76,103 @@ public class ForecastWeatherFragment extends Fragment {
     }
 
     private void setTextViews(final View rootView) {
-        JSONArray weatherForecast = getWeatherForecastFromDB();
-        setIcons(rootView, weatherForecast);
-        setDates(rootView, weatherForecast);
-        setTemperatures(rootView, weatherForecast);
-        setDescriptions(rootView, weatherForecast);
+        try {
+            JSONArray weatherForecast = getWeatherForecastFromDB();
+            setIcons(rootView, weatherForecast);
+            setDates(rootView, weatherForecast);
+            setTemperatures(rootView, weatherForecast);
+            setDescriptions(rootView, weatherForecast);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     private JSONArray getWeatherForecastFromDB() {
         Localization localization = db.findLocationByName(Parameter.LOCALIZATION_NAME);
-        JSONArray weatherForecast = null;
-        try {
-            weatherForecast = new JSONArray(localization.getForecast());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (localization.getForecast() != null) {
+            try {
+                return new JSONArray(localization.getForecast());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return weatherForecast;
+        return null;
     }
 
     private void setDescriptions(View rootView, JSONArray weatherForecast) {
-        final String DESCRIPTION = getResources().getString(R.string.forecast_description);
+        TextView forecastDescription1 = (TextView) rootView.findViewById(R.id.forecastDay1DescriptionValue);
+        forecastDescription1.setText(getForecastDescription(weatherForecast, 1));
 
-        TextView forecastDescription1 = (TextView) rootView.findViewById(R.id.forecastDay1Description);
-        String boldedDescriptionValue = DESCRIPTION + ": " + "<b>" + getForecastDescription(weatherForecast, 1) + "</b>";
-        forecastDescription1.setText(Html.fromHtml(boldedDescriptionValue));
+        TextView forecastDescription2 = (TextView) rootView.findViewById(R.id.forecastDay2DescriptionValue);
+        forecastDescription2.setText(getForecastDescription(weatherForecast, 2));
 
-        TextView forecastDescription2 = (TextView) rootView.findViewById(R.id.forecastDay2Description);
-        boldedDescriptionValue = DESCRIPTION + ": " + "<b>" + getForecastDescription(weatherForecast, 2) + "</b>";
-        forecastDescription2.setText(Html.fromHtml(boldedDescriptionValue));
+        TextView forecastDescription3 = (TextView) rootView.findViewById(R.id.forecastDay3DescriptionValue);
+        forecastDescription3.setText(getForecastDescription(weatherForecast, 3));
 
-        TextView forecastDescription3 = (TextView) rootView.findViewById(R.id.forecastDay3Description);
-        boldedDescriptionValue = DESCRIPTION + ": " + "<b>" + getForecastDescription(weatherForecast, 3) + "</b>";
-        forecastDescription3.setText(Html.fromHtml(boldedDescriptionValue));
+        TextView forecastDescription4 = (TextView) rootView.findViewById(R.id.forecastDay4DescriptionValue);
+        forecastDescription4.setText(getForecastDescription(weatherForecast, 4));
 
-        TextView forecastDescription4 = (TextView) rootView.findViewById(R.id.forecastDay4Description);
-        boldedDescriptionValue = DESCRIPTION + ": " + "<b>" + getForecastDescription(weatherForecast, 4) + "</b>";
-        forecastDescription4.setText(Html.fromHtml(boldedDescriptionValue));
+        TextView forecastDescription5 = (TextView) rootView.findViewById(R.id.forecastDay5DescriptionValue);
+        forecastDescription5.setText(getForecastDescription(weatherForecast, 5));
 
-        TextView forecastDescription5 = (TextView) rootView.findViewById(R.id.forecastDay5Description);
-        boldedDescriptionValue = DESCRIPTION + ": " + "<b>" + getForecastDescription(weatherForecast, 5) + "</b>";
-        forecastDescription5.setText(Html.fromHtml(boldedDescriptionValue));
+        TextView forecastDescription6 = (TextView) rootView.findViewById(R.id.forecastDay6DescriptionValue);
+        forecastDescription6.setText(getForecastDescription(weatherForecast, 6));
 
-        TextView forecastDescription6 = (TextView) rootView.findViewById(R.id.forecastDay6Description);
-        boldedDescriptionValue = DESCRIPTION + ": " + "<b>" + getForecastDescription(weatherForecast, 6) + "</b>";
-        forecastDescription6.setText(Html.fromHtml(boldedDescriptionValue));
-
-        TextView forecastDescription7 = (TextView) rootView.findViewById(R.id.forecastDay7Description);
-        boldedDescriptionValue = DESCRIPTION + ": " + "<b>" + getForecastDescription(weatherForecast, 7) + "</b>";
-        forecastDescription7.setText(Html.fromHtml(boldedDescriptionValue));
+        TextView forecastDescription7 = (TextView) rootView.findViewById(R.id.forecastDay7DescriptionValue);
+        forecastDescription7.setText(getForecastDescription(weatherForecast, 7));
     }
 
     private void setTemperatures(View rootView, JSONArray weatherForecast) {
-        final String TEMPERATURE = getResources().getString(R.string.forecast_temperature);
+        TextView forecastTemperature1 = (TextView) rootView.findViewById(R.id.forecastDay1TemperatureValue);
+        forecastTemperature1.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 1))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 1)));
 
-        TextView forecastTemperature1 = (TextView) rootView.findViewById(R.id.forecastDay1Temperature);
-        String boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 1))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 1)) + Parameter.TEMPERATURE_UNIT + "</b>";
-        forecastTemperature1.setText(Html.fromHtml(boldedTemperatureValue));
+        TextView forecastTemperature2 = (TextView) rootView.findViewById(R.id.forecastDay2TemperatureValue);
+        forecastTemperature2.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 2))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 2)));
 
-        TextView forecastTemperature2 = (TextView) rootView.findViewById(R.id.forecastDay2Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 2))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 2)) + Parameter.TEMPERATURE_UNIT + "</b>";
-        forecastTemperature2.setText(Html.fromHtml(boldedTemperatureValue));
+        TextView forecastTemperature3 = (TextView) rootView.findViewById(R.id.forecastDay3TemperatureValue);
+        forecastTemperature3.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 3))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 3)));
 
-        TextView forecastTemperature3 = (TextView) rootView.findViewById(R.id.forecastDay3Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 3))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 3)) + Parameter.TEMPERATURE_UNIT + "</b>";
-        forecastTemperature3.setText(Html.fromHtml(boldedTemperatureValue));
+        TextView forecastTemperature4 = (TextView) rootView.findViewById(R.id.forecastDay4TemperatureValue);
+        forecastTemperature4.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 4))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 4)));
 
-        TextView forecastTemperature4 = (TextView) rootView.findViewById(R.id.forecastDay4Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 4))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 4)) + Parameter.TEMPERATURE_UNIT + "</b>";
-        forecastTemperature4.setText(Html.fromHtml(boldedTemperatureValue));
+        TextView forecastTemperature5 = (TextView) rootView.findViewById(R.id.forecastDay5TemperatureValue);
+        forecastTemperature5.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 5))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 5)));
 
-        TextView forecastTemperature5 = (TextView) rootView.findViewById(R.id.forecastDay5Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 5))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 5)) + Parameter.TEMPERATURE_UNIT + "</b>";
-        forecastTemperature5.setText(Html.fromHtml(boldedTemperatureValue));
+        TextView forecastTemperature6 = (TextView) rootView.findViewById(R.id.forecastDay6TemperatureValue);
+        forecastTemperature6.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 6))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 6)));
 
-        TextView forecastTemperature6 = (TextView) rootView.findViewById(R.id.forecastDay6Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 6))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 6)) + Parameter.TEMPERATURE_UNIT + "</b>";
-        forecastTemperature6.setText(Html.fromHtml(boldedTemperatureValue));
-
-        TextView forecastTemperature7 = (TextView) rootView.findViewById(R.id.forecastDay7Temperature);
-        boldedTemperatureValue = TEMPERATURE + ": " + "<b>" + getConverterTemperature(getForecastLowTemperature(weatherForecast, 7))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 7)) + Parameter.TEMPERATURE_UNIT + "</b>";
-        forecastTemperature7.setText(Html.fromHtml(boldedTemperatureValue));
+        TextView forecastTemperature7 = (TextView) rootView.findViewById(R.id.forecastDay7TemperatureValue);
+        forecastTemperature7.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 7))
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 7)));
     }
 
     private void setDates(View rootView, JSONArray weatherForecast) {
-        final String DATE = getResources().getString(R.string.forecast_date);
+        TextView forecastDate1 = (TextView) rootView.findViewById(R.id.forecastDay1DateValue);
+        forecastDate1.setText(getForecastDay(weatherForecast, 1) + ", " + getForecastDate(weatherForecast, 1));
 
-        TextView forecastDate1 = (TextView) rootView.findViewById(R.id.forecastDay1Date);
-        String boldedDateValue = DATE + ": " + "<b>" + getForecastDay(weatherForecast, 1) + ", " + getForecastDate(weatherForecast, 1) + "</b>";
-        forecastDate1.setText(Html.fromHtml(boldedDateValue));
+        TextView forecastDate2 = (TextView) rootView.findViewById(R.id.forecastDay2DateValue);
+        forecastDate2.setText(getForecastDay(weatherForecast, 2) + ", " + getForecastDate(weatherForecast, 2));
 
-        TextView forecastDate2 = (TextView) rootView.findViewById(R.id.forecastDay2Date);
-        boldedDateValue = DATE + ": " + "<b>" + getForecastDay(weatherForecast, 2) + ", " + getForecastDate(weatherForecast, 2) + "</b>";
-        forecastDate2.setText(Html.fromHtml(boldedDateValue));
+        TextView forecastDate3 = (TextView) rootView.findViewById(R.id.forecastDay3DateValue);
+        forecastDate3.setText(getForecastDay(weatherForecast, 3) + ", " + getForecastDate(weatherForecast, 3));
 
-        TextView forecastDate3 = (TextView) rootView.findViewById(R.id.forecastDay3Date);
-        boldedDateValue = DATE + ": " + "<b>" + getForecastDay(weatherForecast, 3) + ", " + getForecastDate(weatherForecast, 3) + "</b>";
-        forecastDate3.setText(Html.fromHtml(boldedDateValue));
+        TextView forecastDate4 = (TextView) rootView.findViewById(R.id.forecastDay4DateValue);
+        forecastDate4.setText(getForecastDay(weatherForecast, 4) + ", " + getForecastDate(weatherForecast, 4));
 
-        TextView forecastDate4 = (TextView) rootView.findViewById(R.id.forecastDay4Date);
-        boldedDateValue = DATE + ": " + "<b>" + getForecastDay(weatherForecast, 4) + ", " + getForecastDate(weatherForecast, 4) + "</b>";
-        forecastDate4.setText(Html.fromHtml(boldedDateValue));
+        TextView forecastDate5 = (TextView) rootView.findViewById(R.id.forecastDay5DateValue);
+        forecastDate5.setText(getForecastDay(weatherForecast, 5) + ", " + getForecastDate(weatherForecast, 5));
 
-        TextView forecastDate5 = (TextView) rootView.findViewById(R.id.forecastDay5Date);
-        boldedDateValue = DATE + ": " + "<b>" + getForecastDay(weatherForecast, 5) + ", " + getForecastDate(weatherForecast, 5) + "</b>";
-        forecastDate5.setText(Html.fromHtml(boldedDateValue));
+        TextView forecastDate6 = (TextView) rootView.findViewById(R.id.forecastDay6DateValue);
+        forecastDate6.setText(getForecastDay(weatherForecast, 6) + ", " + getForecastDate(weatherForecast, 6));
 
-        TextView forecastDate6 = (TextView) rootView.findViewById(R.id.forecastDay6Date);
-        boldedDateValue = DATE + ": " + "<b>" + getForecastDay(weatherForecast, 6) + ", " + getForecastDate(weatherForecast, 6) + "</b>";
-        forecastDate6.setText(Html.fromHtml(boldedDateValue));
-
-        TextView forecastDate7 = (TextView) rootView.findViewById(R.id.forecastDay7Date);
-        boldedDateValue = DATE + ": " + "<b>" + getForecastDay(weatherForecast, 7) + ", " + getForecastDate(weatherForecast, 7) + "</b>";
-        forecastDate7.setText(Html.fromHtml(boldedDateValue));
+        TextView forecastDate7 = (TextView) rootView.findViewById(R.id.forecastDay7DateValue);
+        forecastDate7.setText(getForecastDay(weatherForecast, 7) + ", " + getForecastDate(weatherForecast, 7));
     }
 
     private void setIcons(View rootView, JSONArray weatherForecast) {
