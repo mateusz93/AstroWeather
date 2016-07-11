@@ -3,7 +3,6 @@ package dmcs.astroWeather.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -51,23 +50,6 @@ public class DBLocalization extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertLocation(String name, String woeid, String latitude, String longitude,
-                                  String city, String country, String weather, String forecast, String lastUpdate) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(LOCATION_COLUMN_NAME, name);
-        contentValues.put(LOCATION_COLUMN_WOEID, woeid);
-        contentValues.put(LOCATION_COLUMN_LATITUDE, latitude);
-        contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
-        contentValues.put(LOCATION_COLUMN_CITY, city);
-        contentValues.put(LOCATION_COLUMN_COUNTRY, country);
-        contentValues.put(LOCATION_COLUMN_WEATHER, weather);
-        contentValues.put(LOCATION_COLUMN_FORECAST, forecast);
-        contentValues.put(LOCATION_COLUMN_LAST_WEATHER_UPDATE, lastUpdate);
-        db.insert(LOCATION_TABLE_NAME, null, contentValues);
-        return true;
-    }
-
     public boolean insertLocation(Localization localization) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -81,23 +63,6 @@ public class DBLocalization extends SQLiteOpenHelper {
         contentValues.put(LOCATION_COLUMN_FORECAST, localization.getForecast());
         contentValues.put(LOCATION_COLUMN_LAST_WEATHER_UPDATE, localization.getLastUpdate());
         db.insert(LOCATION_TABLE_NAME, null, contentValues);
-        return true;
-    }
-
-    public boolean updateLocation(Integer id, String name, String woeid, String latitude, String longitude,
-                                  String city, String country, String weather, String forecast, String lastUpdate) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(LOCATION_COLUMN_NAME, name);
-        contentValues.put(LOCATION_COLUMN_WOEID, woeid);
-        contentValues.put(LOCATION_COLUMN_LATITUDE, latitude);
-        contentValues.put(LOCATION_COLUMN_LONGITUDE, longitude);
-        contentValues.put(LOCATION_COLUMN_CITY, city);
-        contentValues.put(LOCATION_COLUMN_COUNTRY, country);
-        contentValues.put(LOCATION_COLUMN_WEATHER, weather);
-        contentValues.put(LOCATION_COLUMN_FORECAST, forecast);
-        contentValues.put(LOCATION_COLUMN_LAST_WEATHER_UPDATE, lastUpdate);
-        db.update(LOCATION_TABLE_NAME, contentValues, "id = ? ", new String[]{Integer.toString(id)});
         return true;
     }
 
@@ -161,28 +126,6 @@ public class DBLocalization extends SQLiteOpenHelper {
         }
     }
 
-    public Localization findLocationByWoeid(String woeid) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + LOCATION_TABLE_NAME + " WHERE woeid='" + woeid + "'", null);
-
-        if (cursor.moveToFirst()) {
-            Localization localization = new Localization();
-            localization.setId(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_ID)));
-            localization.setName(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_NAME)));
-            localization.setCity(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_CITY)));
-            localization.setCountry(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_COUNTRY)));
-            localization.setLatitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LATITUDE)));
-            localization.setLongitude(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LONGITUDE)));
-            localization.setWoeid(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WOEID)));
-            localization.setWeather(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_WEATHER)));
-            localization.setForecast(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_FORECAST)));
-            localization.setLastUpdate(cursor.getString(cursor.getColumnIndex(LOCATION_COLUMN_LAST_WEATHER_UPDATE)));
-            return localization;
-        } else {
-            return null;
-        }
-    }
-
     public List<Localization> findAllLocation() {
         List<Localization> localizations = new ArrayList<>();
 
@@ -213,8 +156,4 @@ public class DBLocalization extends SQLiteOpenHelper {
         return db.delete(LOCATION_TABLE_NAME, "id = ? ", new String[]{Integer.toString(id)});
     }
 
-    public int getNumberOfRows() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return (int) DatabaseUtils.queryNumEntries(db, LOCATION_TABLE_NAME);
-    }
 }

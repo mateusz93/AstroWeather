@@ -50,15 +50,6 @@ public class DBParameter extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertParameter(String paramName, String paramValue) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PARAMETER_COLUMN_PARAM_NAME, paramName);
-        contentValues.put(PARAMETER_COLUMN_PARAM_VALUE, paramValue);
-        db.insert(PARAMETER_TABLE_NAME, null, contentValues);
-        return true;
-    }
-
     public String findParamValueByParamName(String paramName) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + PARAMETER_TABLE_NAME + " WHERE " +
@@ -78,5 +69,4 @@ public class DBParameter extends SQLiteOpenHelper {
         }
         return -1;
     }
-
 }
