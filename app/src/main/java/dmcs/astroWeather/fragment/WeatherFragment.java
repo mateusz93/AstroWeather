@@ -171,7 +171,7 @@ public class WeatherFragment extends Fragment {
             descriptionView.setText(getString(R.string.weather_description) + ": ");
             TextView descriptionValueView = (TextView) rootView.findViewById(R.id.weatherDescriptionValue);
             descriptionValueView.setText(description);
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             e.printStackTrace();
         }
     }
@@ -190,13 +190,14 @@ public class WeatherFragment extends Fragment {
 
     private JSONObject getWeatherFromDB() {
         Localization localization = db.findLocationByName(Parameter.LOCALIZATION_NAME);
-        JSONObject weather = null;
-        try {
-            weather = new JSONObject(localization.getWeather());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (localization.getWeather() != null) {
+            try {
+                return new JSONObject(localization.getWeather());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return weather;
+        return null;
     }
 
     private boolean isWeatherCurrent() {
