@@ -125,31 +125,31 @@ public class ForecastWeatherFragment extends Fragment {
     private void setTemperatures(View rootView, JSONArray weatherForecast) {
         TextView forecastTemperature1 = (TextView) rootView.findViewById(R.id.forecastDay1TemperatureValue);
         forecastTemperature1.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 1))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 1)));
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 1)) + Parameter.TEMPERATURE_UNIT);
 
         TextView forecastTemperature2 = (TextView) rootView.findViewById(R.id.forecastDay2TemperatureValue);
         forecastTemperature2.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 2))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 2)));
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 2)) + Parameter.TEMPERATURE_UNIT);
 
         TextView forecastTemperature3 = (TextView) rootView.findViewById(R.id.forecastDay3TemperatureValue);
         forecastTemperature3.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 3))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 3)));
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 3)) + Parameter.TEMPERATURE_UNIT);
 
         TextView forecastTemperature4 = (TextView) rootView.findViewById(R.id.forecastDay4TemperatureValue);
         forecastTemperature4.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 4))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 4)));
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 4)) + Parameter.TEMPERATURE_UNIT);
 
         TextView forecastTemperature5 = (TextView) rootView.findViewById(R.id.forecastDay5TemperatureValue);
         forecastTemperature5.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 5))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 5)));
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 5)) + Parameter.TEMPERATURE_UNIT);
 
         TextView forecastTemperature6 = (TextView) rootView.findViewById(R.id.forecastDay6TemperatureValue);
         forecastTemperature6.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 6))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 6)));
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 6)) + Parameter.TEMPERATURE_UNIT);
 
         TextView forecastTemperature7 = (TextView) rootView.findViewById(R.id.forecastDay7TemperatureValue);
         forecastTemperature7.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 7))
-                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 7)));
+                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 7)) + Parameter.TEMPERATURE_UNIT);
     }
 
     private void setDates(View rootView, JSONArray weatherForecast) {
