@@ -10,12 +10,10 @@ import android.widget.TextView;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.Sun;
-import dmcs.astroWeather.util.AstroDateTimeFormatter;
 import dmcs.astroWeather.util.Parameter;
-import dmcs.astroWeather.util.StringFormatter;
 
 /**
- * Created by Mateusz on 2016-05-11.
+ * @Author Mateusz Wieczorek on 2016-05-11.
  */
 public class SunFragment extends Fragment {
 
@@ -40,12 +38,9 @@ public class SunFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.sun_fragment, container, false);
-//        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-
+        sun = new Sun();
         thread = createThread(rootView);
         thread.start();
-
         return rootView;
     }
 
@@ -84,32 +79,22 @@ public class SunFragment extends Fragment {
     }
 
     private void setTextViews(View rootView) {
-        sun = new Sun();
+        TextView sunAzimuthRise = (TextView) rootView.findViewById(R.id.sunAzimuthRiseValue);
+        sunAzimuthRise.setText(String.valueOf(sun.getAzimuthRise()));
 
-        TextView sunAzimuthRise = (TextView) rootView.findViewById(R.id.sunAzimuthRise);
-        sunAzimuthRise.setText(StringFormatter.padRight(getString(R.string.sun_AzimuthRise) + ": ", 30)
-                + String.format("%10s", String.format("%.4f", sun.getAzimuthRise())));
+        TextView sunAzimuthSet = (TextView) rootView.findViewById(R.id.sunAzimuthSetValue);
+        sunAzimuthSet.setText(String.valueOf(sun.getAzimuthSet()));
 
-        TextView sunAzimuthSet = (TextView) rootView.findViewById(R.id.sunAzimuthSet);
-        sunAzimuthSet.setText(StringFormatter.padRight(getString(R.string.sun_AzimuthSet) + ": ", 30)
-                + String.format("%10s",String.format("%.4f", sun.getAzimuthSet())));
+        TextView sunSunrise = (TextView) rootView.findViewById(R.id.sunSunriseValue);
+        sunSunrise.setText(String.valueOf(sun.getSunrise()));
 
-        TextView sunSunrise = (TextView) rootView.findViewById(R.id.sunSunrise);
-        sunSunrise.setText(StringFormatter.padRight(getString(R.string.sun_Sunrise) + ": ", 30)
-                + String.format("%10s", AstroDateTimeFormatter.getFormattedTime(sun.getSunrise())));
+        TextView sunSunset = (TextView) rootView.findViewById(R.id.sunSunsetValue);
+        sunSunset.setText(String.valueOf(sun.getSunset()));
 
-        TextView sunSunset = (TextView) rootView.findViewById(R.id.sunSunset);
-        sunSunset.setText(StringFormatter.padRight(getString(R.string.sun_Sunset) + ": ", 30)
-                + String.format("%10s", AstroDateTimeFormatter.getFormattedTime(sun.getSunset())));
+        TextView sunTwilightMorning = (TextView) rootView.findViewById(R.id.sunTwilightMorningValue);
+        sunTwilightMorning.setText(String.valueOf(sun.getTwilightMorning()));
 
-        TextView sunTwilightMorning = (TextView) rootView.findViewById(R.id.sunTwilightMorning);
-        sunTwilightMorning.setText(StringFormatter.padRight(getString(R.string.sun_TwilightMorning) + ": ", 30)
-                + String.format("%10s", AstroDateTimeFormatter.getFormattedTime(sun.getTwilightMorning())));
-
-        TextView sunTwilightEvening = (TextView) rootView.findViewById(R.id.sunTwilightEvening);
-        sunTwilightEvening.setText(StringFormatter.padRight(getString(R.string.sun_TwilightEvening) + ": ", 30)
-                + String.format("%10s", AstroDateTimeFormatter.getFormattedTime(sun.getTwilightEvening())));
-
+        TextView sunTwilightEvening = (TextView) rootView.findViewById(R.id.sunTwilightEveningValue);
+        sunTwilightEvening.setText(String.valueOf(sun.getTwilightEvening()));
     }
-
 }

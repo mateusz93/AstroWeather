@@ -70,4 +70,5 @@
     <string name="forecast.date">Date</string>
     <string name="forecast.temperature">Temperature</string>
     <string name="forecast.description">Description</string>
+    <string name="sun_image">Sun image</string>
 </resources>
