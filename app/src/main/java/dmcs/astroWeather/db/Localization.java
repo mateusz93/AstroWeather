@@ -1,9 +1,7 @@
 package dmcs.astroWeather.db;
 
-import java.sql.Timestamp;
-
 /**
- * Created by Mateusz on 2016-05-28.
+ * @Author Mateusz Wieczorek on 2016-05-28.
  */
 public class Localization {
 
