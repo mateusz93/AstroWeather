@@ -23,13 +23,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return SunFragment.newInstance(0);
+                return SunFragment.newInstance();
             case 1:
-                return MoonFragment.newInstance(1);
+                return MoonFragment.newInstance();
             case 2:
-                return WeatherFragment.newInstance(2);
+                return WeatherFragment.newInstance();
             case 3:
-                return ForecastWeatherFragment.newInstance(3);
+                return ForecastWeatherFragment.newInstance();
             default:
                 return null;
         }

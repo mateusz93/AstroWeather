@@ -2,7 +2,6 @@ package dmcs.astroWeather.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -12,14 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
@@ -33,21 +30,27 @@ import dmcs.astroWeather.fragment.ForecastWeatherFragment;
 import dmcs.astroWeather.fragment.MoonFragment;
 import dmcs.astroWeather.fragment.SunFragment;
 import dmcs.astroWeather.fragment.WeatherFragment;
+import dmcs.astroWeather.task.WeatherDownloadByLatitudeAndLongitudeTask;
 import dmcs.astroWeather.util.Parameter;
-import dmcs.astroWeather.util.WeatherDownloadTask;
-import dmcs.astroWeather.util.WeatherDownloader;
 
 public class MainActivity extends AppCompatActivity {
 
     private Thread timeThread;
+    private DBLocalization dbLocalization;
+    private DBParameter dbParameter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        dbLocalization = new DBLocalization(this);
+        dbParameter = new DBParameter(this);
         updateParametersFromDatabase();
+        initLayout();
+        checkThatWeatherIsOutOfDate();
+    }
 
+    private void initLayout() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,38 +62,34 @@ public class MainActivity extends AppCompatActivity {
             coordinates.setText(getString(R.string.coordinates) + " " + Parameter.LOCALIZATION_LATITUDE + ", " + Parameter.LOCALIZATION_LONGITUDE);
         }
 
-        timeThread = createTimeThread();
-        timeThread.start();
-
-        if (viewPager != null) {
+        if (viewPager != null) { // For phones
             SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
             viewPager.setAdapter(sectionsPagerAdapter);
             if (tabLayout != null) {
                 tabLayout.setupWithViewPager(viewPager);
             }
-        } else {
-            SunFragment.newInstance(1);
-            MoonFragment.newInstance(2);
-            WeatherFragment.newInstance(3);
-            ForecastWeatherFragment.newInstance(4);
+        } else { // For tablets
+            SunFragment.newInstance();
+            MoonFragment.newInstance();
+            WeatherFragment.newInstance();
+            ForecastWeatherFragment.newInstance();
         }
 
-        showOutdatedWeatherInfo();
+        timeThread = createTimeThread();
+        timeThread.start();
     }
 
-    private void showOutdatedWeatherInfo() {
-        DBLocalization dbLocalization = new DBLocalization(this);
+    private void checkThatWeatherIsOutOfDate() {
         Localization localization = dbLocalization.findLocationByName(Parameter.LOCALIZATION_NAME);
-        long oneHour = 3_600_000;
-        long now = new Date().getTime();
-        if (localization.getLastUpdate() != null) {
-            long localizationTime = Long.valueOf(localization.getLastUpdate());
-            if (localizationTime + oneHour < now) {
-                Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherOutdated), Toast.LENGTH_LONG).show();
-            }
-        } else {
+        if (localization.getLastUpdate() == null || isOutdated(localization.getLastUpdate())) {
             Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherOutdated), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private boolean isOutdated(String localizationTime) {
+        long oneHour = 3_600_000;
+        long now = new Date().getTime();
+        return Long.valueOf(localizationTime) + oneHour < now;
     }
 
     @NonNull
@@ -117,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,28 +158,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateWeather() {
-        DBParameter dbParameter = new DBParameter(this);
-        DBLocalization dbLocalization = new DBLocalization(this);
         String localizationName = dbParameter.findParamValueByParamName("LOCALIZATION_NAME");
         Localization localization = dbLocalization.findLocationByName(localizationName);
         try {
-            JSONObject weather = new WeatherDownloadTask().execute(localization.getLatitude(), localization.getLongitude()).get();
+            JSONObject weather = new WeatherDownloadByLatitudeAndLongitudeTask().execute(localization.getLatitude(), localization.getLongitude()).get();
             localization.setWeather(weather.toString());
             localization.setForecast(weather.getJSONObject("item").getJSONArray("forecast").toString());
             localization.setLastUpdate(String.valueOf(new Date().getTime()));
-        } catch (JSONException e) {
+
+            dbLocalization.updateLocation(localization);
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherUpdated), Toast.LENGTH_LONG).show();
+            finish();
+            startActivity(getIntent());
+        } catch (JSONException | InterruptedException | ExecutionException | NullPointerException e) {
             Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vb.vibrate(300);
             Toast.makeText(MainActivity.this, getResources().getString(R.string.updateWeatherProblem), Toast.LENGTH_LONG).show();
-            return;
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
         }
-        dbLocalization.updateLocation(localization);
-        Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherUpdated), Toast.LENGTH_LONG).show();
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
     }
 
     @Override
@@ -199,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveParametersToDatabase() {
-        DBParameter dbParameter = new DBParameter(this);
         dbParameter.updateParameter("LOCALIZATION_NAME", Parameter.LOCALIZATION_NAME);
         dbParameter.updateParameter("PRESSURE_UNIT", Parameter.PRESSURE_UNIT);
         dbParameter.updateParameter("REFRESH_INTERVAL_IN_SEC", String.valueOf(Parameter.REFRESH_INTERVAL_IN_SEC));
@@ -208,8 +200,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateParametersFromDatabase() {
-        DBParameter dbParameter = new DBParameter(this);
-        DBLocalization dbLocalization = new DBLocalization(this);
         Parameter.LOCALIZATION_NAME = dbParameter.findParamValueByParamName("LOCALIZATION_NAME");
         Localization localization = dbLocalization.findLocationByName(Parameter.LOCALIZATION_NAME);
         Parameter.LOCALIZATION_LATITUDE = Double.valueOf(localization.getLatitude());

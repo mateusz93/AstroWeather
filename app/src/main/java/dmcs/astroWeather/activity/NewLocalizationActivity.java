@@ -3,9 +3,7 @@ package dmcs.astroWeather.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
@@ -17,15 +15,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.db.DBLocalization;
 import dmcs.astroWeather.db.Localization;
-import dmcs.astroWeather.exception.IncorrectLocalizationException;
+import dmcs.astroWeather.task.DownloadWoeidByCityAndCountryTask;
+import dmcs.astroWeather.task.DownloadWoeidByLatitudeAndLongitudeTask;
 import dmcs.astroWeather.util.WeatherDownloader;
 
 /**
- * Created by Mateusz on 2016-06-01.
+ * @Author Mateusz Wieczorek on 2016-06-01.
  */
 public class NewLocalizationActivity extends Activity {
 
@@ -78,94 +78,33 @@ public class NewLocalizationActivity extends Activity {
                 String latitude = ((EditText) findViewById(R.id.LocalizationLatituteValue)).getText().toString();
                 String longitude = ((EditText) findViewById(R.id.LocalizationLongitudeValue)).getText().toString();
 
-                new Connection(name, city, country, latitude, longitude).execute();
+                downloadWeather(name, city, country, latitude, longitude);
             }
         });
     }
 
-    private class Connection extends AsyncTask {
-        private String name;
-        private String city;
-        private String country;
-        private String latitude;
-        private String longitude;
-
-        public Connection(String name, String city, String country, String latitude, String longitude) {
-            this.name = name;
-            this.city = city;
-            this.country = country;
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-
-        @Override
-        protected Object doInBackground(Object... arg0) {
-            try {
-                connect(name, city, country, latitude, longitude);
-                Handler handler =  new Handler(NewLocalizationActivity.this.getMainLooper());
-                handler.post( new Runnable(){
-                    public void run(){
-                        Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.localizationSaved), Toast.LENGTH_LONG).show();
-                    }
-                });
-            } catch (IncorrectLocalizationException e) {
-                Handler handler =  new Handler(NewLocalizationActivity.this.getMainLooper());
-                handler.post( new Runnable(){
-                    public void run(){
-                        Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.incorrectLocalization), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-            return null;
-        }
-
-    }
-
-    private void connect(String name, String city, String country, String latitude, String longitude) throws IncorrectLocalizationException {
+    private void downloadWeather(String name, String city, String country, String latitude, String longitude) {
         Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         try {
-            if (isCorrectCityAndCountry(city, country)) {
-                String woeid = WeatherDownloader.getWoeidByCityAndCountry(city, country);
-                saveLocation(name, woeid);
-
-                Intent intent = new Intent(NewLocalizationActivity.this, LocalizationsActivity.class);
-                vb.vibrate(50);
-                startActivity(intent);
-
-            } else if (isCorrectLatitudeAndLongitude(latitude, longitude)){
-                String woeid = WeatherDownloader.getWoeidByLatitudeAndLongitude(latitude, longitude);
-                saveLocation(name, woeid);
-
-                Intent intent = new Intent(NewLocalizationActivity.this, LocalizationsActivity.class);
-                vb.vibrate(50);
-                startActivity(intent);
-            } else {
-                vb.vibrate(500);
-                throw new IncorrectLocalizationException();
+            String woeid = new DownloadWoeidByCityAndCountryTask().execute(city, country).get();
+            if (woeid == null) {
+                woeid = new DownloadWoeidByLatitudeAndLongitudeTask().execute(latitude, longitude).get();
+                if (woeid == null) {
+                    vb.vibrate(300);
+                    Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.incorrectLocalization), Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-    }
+            saveLocation(name, woeid);
 
-    private boolean isCorrectCityAndCountry(String city, String country) {
-        try {
-            WeatherDownloader.getWoeidByCityAndCountry(city, country);
-            return true;
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+            Intent intent = new Intent(NewLocalizationActivity.this, LocalizationsActivity.class);
+            vb.vibrate(50);
+            Toast.makeText(NewLocalizationActivity.this, getResources().getString(R.string.localizationSaved), Toast.LENGTH_LONG).show();
+            startActivity(intent);
 
-    private boolean isCorrectLatitudeAndLongitude(String lalitude, String longitude) {
-        try {
-            WeatherDownloader.getWeatherByLatitudeAndLongitude(lalitude, longitude);
-            return true;
-        } catch (JSONException | IOException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            return false;
         }
     }
 

@@ -17,20 +17,16 @@ import dmcs.astroWeather.util.Parameter;
  */
 public class SunFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private Thread thread;
     private Sun sun;
-
-    public SunFragment() {}
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static SunFragment newInstance(int sectionNumber) {
+    public static SunFragment newInstance() {
         SunFragment fragment = new SunFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +50,7 @@ public class SunFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                setTextViews(rootView);
+                                setValues(rootView);
                             }
                         });
                         Thread.sleep(Parameter.REFRESH_INTERVAL_IN_SEC * 1000);
@@ -78,7 +74,7 @@ public class SunFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void setTextViews(View rootView) {
+    private void setValues(View rootView) {
         TextView sunAzimuthRise = (TextView) rootView.findViewById(R.id.sunAzimuthRiseValue);
         sunAzimuthRise.setText(String.valueOf(sun.getAzimuthRise()));
 

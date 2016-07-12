@@ -18,42 +18,20 @@ import dmcs.astroWeather.db.Localization;
 import dmcs.astroWeather.util.Parameter;
 
 /**
- * Created by Mateusz on 2016-06-11.
+ * @Author Mateusz Wieczorek on 2016-06-11.
  */
 public class LocalizationListActivity extends Activity {
 
     private RadioGroup citiesList;
-    private DBLocalization db;
+    private DBLocalization dbLocalization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.localization_list);
-        db = new DBLocalization(this);
-        init();
-    }
-
-    private void init() {
-        citiesList = (RadioGroup) findViewById(R.id.citiesRadioGroup);
-
-        citiesList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                vb.vibrate(30);
-                Intent intent = new Intent(LocalizationListActivity.this, SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        List<Localization> localizations = db.findAllLocation();
-
-        for (Localization l : localizations) {
-            RadioButton city = new RadioButton(this);
-            city.setText(l.getName());
-            city.setTextColor(Color.WHITE);
-            citiesList.addView(city);
-        }
+        dbLocalization = new DBLocalization(this);
+        initOnClicks();
+        initLocalizationList();
     }
 
     @Override
@@ -65,6 +43,29 @@ public class LocalizationListActivity extends Activity {
         }
         Intent intent = new Intent(LocalizationListActivity.this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    private void initOnClicks() {
+        citiesList = (RadioGroup) findViewById(R.id.citiesRadioGroup);
+        citiesList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vb.vibrate(30);
+                Intent intent = new Intent(LocalizationListActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initLocalizationList() {
+        List<Localization> localizations = dbLocalization.findAllLocation();
+        for (Localization l : localizations) {
+            RadioButton city = new RadioButton(this);
+            city.setText(l.getName());
+            city.setTextColor(Color.WHITE);
+            citiesList.addView(city);
+        }
     }
 
 }

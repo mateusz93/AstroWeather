@@ -26,8 +26,6 @@ import dmcs.astroWeather.util.Parameter;
  */
 public class SettingsActivity extends Activity {
 
-    private DBLocalization db;
-    private TextView city;
     private EditText refreshingValue;
     private Button saveButton;
     private Button selectButton;
@@ -40,7 +38,6 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
-        db = new DBLocalization(this);
         init();
         initOnClicks();
     }
@@ -52,14 +49,9 @@ public class SettingsActivity extends Activity {
     }
 
     private void init() {
-        city = (TextView) findViewById(R.id.settingsCity);
         refreshingValue = (EditText) findViewById(R.id.refreshingValue);
         saveButton = (Button) findViewById(R.id.saveButton);
         selectButton = (Button) findViewById(R.id.selectCity);
-        setDefaultValues();
-    }
-
-    private void setDefaultValues() {
         celsiusRadioButton = (RadioButton) findViewById(R.id.celsiusRadioButton);
         kelvinRadioButton = (RadioButton) findViewById(R.id.kelvinRadioButton);
         kilometerRadioButton = (RadioButton) findViewById(R.id.kilometerRadioButton);
@@ -68,28 +60,9 @@ public class SettingsActivity extends Activity {
         setTemperatureUnits();
         setSpeedUnit();
 
+        TextView city = (TextView) findViewById(R.id.settingsCity);
         city.setText(getResources().getString(R.string.settings_city) + ": " + String.valueOf(Parameter.LOCALIZATION_NAME));
         refreshingValue.setText(String.valueOf(Parameter.REFRESH_INTERVAL_IN_SEC));
-    }
-
-    private void setSpeedUnit() {
-        if (Parameter.SPEED_UNIT.equals("km/h")) {
-            kilometerRadioButton.setChecked(true);
-            mileRadioButton.setChecked(false);
-        } else {
-            kilometerRadioButton.setChecked(false);
-            mileRadioButton.setChecked(true);
-        }
-    }
-
-    private void setTemperatureUnits() {
-        if (Parameter.TEMPERATURE_UNIT.equals("°C")) {
-            celsiusRadioButton.setChecked(true);
-            kelvinRadioButton.setChecked(false);
-        } else {
-            celsiusRadioButton.setChecked(false);
-            kelvinRadioButton.setChecked(true);
-        }
     }
 
     private void initOnClicks() {
@@ -97,17 +70,11 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-                try {
-                    Parameter.REFRESH_INTERVAL_IN_SEC = Integer.valueOf(refreshingValue.getText().toString());
-                    saveParametersToDatabase();
-                    vb.vibrate(30);
-                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                    startActivity(intent);
-                } catch (NumberFormatException e) {
-                    vb.vibrate(300);
-                    Toast.makeText(SettingsActivity.this, "Nieprawidłowy format!", Toast.LENGTH_LONG).show();
-                }
+                Parameter.REFRESH_INTERVAL_IN_SEC = Integer.valueOf(refreshingValue.getText().toString());
+                saveParametersToDatabase();
+                vb.vibrate(30);
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -154,6 +121,26 @@ public class SettingsActivity extends Activity {
         });
     }
 
+    private void setSpeedUnit() {
+        if (Parameter.SPEED_UNIT.equals("km/h")) {
+            kilometerRadioButton.setChecked(true);
+            mileRadioButton.setChecked(false);
+        } else {
+            kilometerRadioButton.setChecked(false);
+            mileRadioButton.setChecked(true);
+        }
+    }
+
+    private void setTemperatureUnits() {
+        if (Parameter.TEMPERATURE_UNIT.equals("°C")) {
+            celsiusRadioButton.setChecked(true);
+            kelvinRadioButton.setChecked(false);
+        } else {
+            celsiusRadioButton.setChecked(false);
+            kelvinRadioButton.setChecked(true);
+        }
+    }
+
     private void saveParametersToDatabase() {
         DBParameter dbParameter = new DBParameter(this);
         if (kilometerRadioButton.isChecked()) {
@@ -161,11 +148,13 @@ public class SettingsActivity extends Activity {
         } else {
             Parameter.SPEED_UNIT = "mi/h";
         }
+
         if (celsiusRadioButton.isChecked()) {
             Parameter.TEMPERATURE_UNIT = "°C";
         } else {
             Parameter.TEMPERATURE_UNIT = "°K";
         }
+
         dbParameter.updateParameter("LOCALIZATION_NAME", Parameter.LOCALIZATION_NAME);
         dbParameter.updateParameter("PRESSURE_UNIT", Parameter.PRESSURE_UNIT);
         dbParameter.updateParameter("REFRESH_INTERVAL_IN_SEC", String.valueOf(Parameter.REFRESH_INTERVAL_IN_SEC));

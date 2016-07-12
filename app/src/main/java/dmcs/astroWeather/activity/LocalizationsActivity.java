@@ -27,15 +27,14 @@ import dmcs.astroWeather.util.Parameter;
 public class LocalizationsActivity extends Activity {
 
     private final int DELETE_BUTTON_INTERVAL = 1_000_000;
-    private DBLocalization database;
+    private DBLocalization dbLocalization;
     private DBParameter dbParameter;
-    private Button newLocationButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.localizations);
-        database = new DBLocalization(this);
+        dbLocalization = new DBLocalization(this);
         dbParameter = new DBParameter(this);
         generateLocationList();
         initOnClicks();
@@ -48,7 +47,7 @@ public class LocalizationsActivity extends Activity {
     }
 
     private void initOnClicks() {
-        List<Localization> localizationList = database.findAllLocation();
+        List<Localization> localizationList = dbLocalization.findAllLocation();
         for (Localization localization : localizationList) {
             Button editButton = (Button) findViewById(Integer.parseInt(localization.getId()));
             Button deleteButton = (Button) findViewById(Integer.parseInt(localization.getId()) + DELETE_BUTTON_INTERVAL);
@@ -59,7 +58,7 @@ public class LocalizationsActivity extends Activity {
             setDeleteButtonOnClick(deleteButton, deleteButtonId);
         }
 
-        newLocationButton = (Button) findViewById(R.id.newLocation);
+        Button newLocationButton = (Button) findViewById(R.id.newLocation);
         newLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,8 +76,8 @@ public class LocalizationsActivity extends Activity {
             public void onClick(View v) {
                 Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
                 vb.vibrate(50);
-                List<Localization> localizations = database.findAllLocation();
-                Localization localization = database.findLocationById(deleteButtonId - DELETE_BUTTON_INTERVAL);
+                List<Localization> localizations = dbLocalization.findAllLocation();
+                Localization localization = dbLocalization.findLocationById(deleteButtonId - DELETE_BUTTON_INTERVAL);
 
                 deleteLocalization(localizations, deleteButtonId);
                 updateDefaultLocalization(localizations, localization);
@@ -106,7 +105,7 @@ public class LocalizationsActivity extends Activity {
 
     private void deleteLocalization(List<Localization> localizations, final int deleteButtonId) {
         if (localizations.size() > 1) {
-            database.deleteLocation(deleteButtonId - DELETE_BUTTON_INTERVAL);
+            dbLocalization.deleteLocation(deleteButtonId - DELETE_BUTTON_INTERVAL);
             Toast.makeText(LocalizationsActivity.this, getResources().getString(R.string.localizationDeleted), Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(LocalizationsActivity.this, getResources().getString(R.string.localizationNotDeleted), Toast.LENGTH_LONG).show();
@@ -130,7 +129,7 @@ public class LocalizationsActivity extends Activity {
     private void generateLocationList() {
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.locationList);
 
-        for (Localization localization : database.findAllLocation()) {
+        for (Localization localization : dbLocalization.findAllLocation()) {
             LinearLayout newLinearLayout = getLinearLayout();
 
             TextView nameView = getNameView(localization);

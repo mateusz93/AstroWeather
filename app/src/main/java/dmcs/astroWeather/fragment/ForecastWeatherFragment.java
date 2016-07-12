@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +20,17 @@ import dmcs.astroWeather.util.Parameter;
 import dmcs.astroWeather.util.UnitConverter;
 
 /**
- * Created by Mateusz on 2016-06-08.
+ * @Author Mateusz Wieczorek on 2016-06-08.
  */
 public class ForecastWeatherFragment extends Fragment {
 
-    private Thread thread;
-    private DBLocalization db;
-
-    public ForecastWeatherFragment() {
-    }
+    private DBLocalization dbLocalization;
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static ForecastWeatherFragment newInstance(int sectionNumber) {
+    public static ForecastWeatherFragment newInstance() {
         ForecastWeatherFragment fragment = new ForecastWeatherFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -55,7 +50,7 @@ public class ForecastWeatherFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                setTextViews(rootView);
+                setValues(rootView);
             }
         });
     }
@@ -70,12 +65,12 @@ public class ForecastWeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = new DBLocalization(getContext());
+        dbLocalization = new DBLocalization(getContext());
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
     }
 
-    private void setTextViews(final View rootView) {
+    private void setValues(final View rootView) {
         try {
             JSONArray weatherForecast = getWeatherForecastFromDB();
             setIcons(rootView, weatherForecast);
@@ -88,7 +83,7 @@ public class ForecastWeatherFragment extends Fragment {
     }
 
     private JSONArray getWeatherForecastFromDB() {
-        Localization localization = db.findLocationByName(Parameter.LOCALIZATION_NAME);
+        Localization localization = dbLocalization.findLocationByName(Parameter.LOCALIZATION_NAME);
         if (localization.getForecast() != null) {
             try {
                 return new JSONArray(localization.getForecast());
@@ -241,8 +236,8 @@ public class ForecastWeatherFragment extends Fragment {
             return weather.getJSONObject(dayNumber).getString(item);
         } catch (JSONException e) {
             e.printStackTrace();
-            return "";
         }
+        return "";
     }
 
     private String getConverterTemperature(String temperature) {
