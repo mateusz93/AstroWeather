@@ -2,6 +2,7 @@ package dmcs.astroWeather.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.SectionsPagerAdapter;
@@ -31,6 +34,7 @@ import dmcs.astroWeather.fragment.MoonFragment;
 import dmcs.astroWeather.fragment.SunFragment;
 import dmcs.astroWeather.fragment.WeatherFragment;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.WeatherDownloadTask;
 import dmcs.astroWeather.util.WeatherDownloader;
 
 public class MainActivity extends AppCompatActivity {
@@ -161,15 +165,17 @@ public class MainActivity extends AppCompatActivity {
         String localizationName = dbParameter.findParamValueByParamName("LOCALIZATION_NAME");
         Localization localization = dbLocalization.findLocationByName(localizationName);
         try {
-            JSONObject weather = WeatherDownloader.getWeatherByWoeid(localization.getWoeid());
+            JSONObject weather = new WeatherDownloadTask().execute(localization.getLatitude(), localization.getLongitude()).get();
             localization.setWeather(weather.toString());
             localization.setForecast(weather.getJSONObject("item").getJSONArray("forecast").toString());
             localization.setLastUpdate(String.valueOf(new Date().getTime()));
-        } catch (IOException | JSONException e) {
+        } catch (JSONException e) {
             Vibrator vb = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vb.vibrate(300);
             Toast.makeText(MainActivity.this, getResources().getString(R.string.updateWeatherProblem), Toast.LENGTH_LONG).show();
             return;
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
         dbLocalization.updateLocation(localization);
         Toast.makeText(MainActivity.this, getResources().getString(R.string.weatherUpdated), Toast.LENGTH_LONG).show();
