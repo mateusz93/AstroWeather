@@ -85,15 +85,15 @@ public class MoonFragment extends Fragment {
         moonIllumination.setText(UnitConverter.getFormattedNumber(moon.getIllumination() * 100.0) + "%");
 
         TextView moonMoonrise = (TextView) rootView.findViewById(R.id.moonMoonriseValue);
-        moonMoonrise.setText(String.valueOf(moon.getMoonrise()));
+        moonMoonrise.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getMoonrise()));
 
         TextView moonMoonset = (TextView) rootView.findViewById(R.id.moonMoonsetValue);
-        moonMoonset.setText(String.valueOf(moon.getMoonset()));
+        moonMoonset.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getMoonset()));
 
         TextView moonNextFullMoon = (TextView) rootView.findViewById(R.id.moonNextFullMoonValue);
-        moonNextFullMoon.setText(String.valueOf(moon.getNextFullMoon()));
+        moonNextFullMoon.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getNextFullMoon()));
 
         TextView moonNextNewMoon = (TextView) rootView.findViewById(R.id.moonNextNewMoonValue);
-        moonNextNewMoon.setText(String.valueOf(moon.getNextNewMoon()));
+        moonNextNewMoon.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getNextNewMoon()));
     }
 }

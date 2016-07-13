@@ -83,15 +83,15 @@ public class SunFragment extends Fragment {
         sunAzimuthSet.setText(UnitConverter.getFormattedNumber(sun.getAzimuthSet()));
 
         TextView sunSunrise = (TextView) rootView.findViewById(R.id.sunSunriseValue);
-        sunSunrise.setText(String.valueOf(sun.getSunrise()));
+        sunSunrise.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getSunrise()));
 
         TextView sunSunset = (TextView) rootView.findViewById(R.id.sunSunsetValue);
-        sunSunset.setText(String.valueOf(sun.getSunset()));
+        sunSunset.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getSunset()));
 
         TextView sunTwilightMorning = (TextView) rootView.findViewById(R.id.sunTwilightMorningValue);
-        sunTwilightMorning.setText(String.valueOf(sun.getTwilightMorning()));
+        sunTwilightMorning.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getTwilightMorning()));
 
         TextView sunTwilightEvening = (TextView) rootView.findViewById(R.id.sunTwilightEveningValue);
-        sunTwilightEvening.setText(String.valueOf(sun.getTwilightEvening()));
+        sunTwilightEvening.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getTwilightEvening()));
     }
 }
