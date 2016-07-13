@@ -1,7 +1,5 @@
 package dmcs.astroWeather.util;
 
-import com.astrocalculator.AstroDateTime;
-
 /**
  * @Author Mateusz Wieczorek on 2016-06-08.
  */
@@ -30,14 +28,5 @@ public class UnitConverter {
         } else {
             return String.format("%s", number);
         }
-    }
-
-    public static String getDateTimeWithoutTimeZone(AstroDateTime dateTime) {
-        String time[] = dateTime.toString().split("\\s+");
-        String dateTimeWithoutTimeZone = "";
-        for (int i = 0; i < time.length -1; ++i) {
-            dateTimeWithoutTimeZone += time[i] + " ";
-        }
-        return dateTimeWithoutTimeZone.trim();
     }
 }

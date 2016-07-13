@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.Sun;
+import dmcs.astroWeather.util.AstroDateTimeFormatter;
 import dmcs.astroWeather.util.Parameter;
 import dmcs.astroWeather.util.UnitConverter;
 
@@ -83,15 +84,15 @@ public class SunFragment extends Fragment {
         sunAzimuthSet.setText(UnitConverter.getFormattedNumber(sun.getAzimuthSet()));
 
         TextView sunSunrise = (TextView) rootView.findViewById(R.id.sunSunriseValue);
-        sunSunrise.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getSunrise()));
+        sunSunrise.setText(AstroDateTimeFormatter.getFormattedDateAndTime(sun.getSunrise()));
 
         TextView sunSunset = (TextView) rootView.findViewById(R.id.sunSunsetValue);
-        sunSunset.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getSunset()));
+        sunSunset.setText(AstroDateTimeFormatter.getFormattedDateAndTime(sun.getSunset()));
 
         TextView sunTwilightMorning = (TextView) rootView.findViewById(R.id.sunTwilightMorningValue);
-        sunTwilightMorning.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getTwilightMorning()));
+        sunTwilightMorning.setText(AstroDateTimeFormatter.getFormattedDateAndTime(sun.getTwilightMorning()));
 
         TextView sunTwilightEvening = (TextView) rootView.findViewById(R.id.sunTwilightEveningValue);
-        sunTwilightEvening.setText(UnitConverter.getDateTimeWithoutTimeZone(sun.getTwilightEvening()));
+        sunTwilightEvening.setText(AstroDateTimeFormatter.getFormattedDateAndTime(sun.getTwilightEvening()));
     }
 }

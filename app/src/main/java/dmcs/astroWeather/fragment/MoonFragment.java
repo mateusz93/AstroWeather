@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import dmcs.astroWeather.Moon;
 import dmcs.astroWeather.R;
+import dmcs.astroWeather.util.AstroDateTimeFormatter;
 import dmcs.astroWeather.util.Parameter;
 import dmcs.astroWeather.util.UnitConverter;
 
@@ -85,15 +86,15 @@ public class MoonFragment extends Fragment {
         moonIllumination.setText(UnitConverter.getFormattedNumber(moon.getIllumination() * 100.0) + "%");
 
         TextView moonMoonrise = (TextView) rootView.findViewById(R.id.moonMoonriseValue);
-        moonMoonrise.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getMoonrise()));
+        moonMoonrise.setText(AstroDateTimeFormatter.getFormattedDateAndTime(moon.getMoonrise()));
 
         TextView moonMoonset = (TextView) rootView.findViewById(R.id.moonMoonsetValue);
-        moonMoonset.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getMoonset()));
+        moonMoonset.setText(AstroDateTimeFormatter.getFormattedDateAndTime(moon.getMoonset()));
 
         TextView moonNextFullMoon = (TextView) rootView.findViewById(R.id.moonNextFullMoonValue);
-        moonNextFullMoon.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getNextFullMoon()));
+        moonNextFullMoon.setText(AstroDateTimeFormatter.getFormattedDateAndTime(moon.getNextFullMoon()));
 
         TextView moonNextNewMoon = (TextView) rootView.findViewById(R.id.moonNextNewMoonValue);
-        moonNextNewMoon.setText(UnitConverter.getDateTimeWithoutTimeZone(moon.getNextNewMoon()));
+        moonNextNewMoon.setText(AstroDateTimeFormatter.getFormattedDateAndTime(moon.getNextNewMoon()));
     }
 }
