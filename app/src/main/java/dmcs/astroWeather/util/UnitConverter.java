@@ -21,7 +21,7 @@ public class UnitConverter {
         return getFormattedNumber(kelvin - 273.0);
     }
 
-    private static String getFormattedNumber(double number) {
+    public static String getFormattedNumber(double number) {
         number = Double.valueOf(String.format("%.2f", number)); // set precision
         if(number == (long) number) {
             return String.format("%d", (long) number);

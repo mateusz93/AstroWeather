@@ -32,6 +32,7 @@ import dmcs.astroWeather.fragment.SunFragment;
 import dmcs.astroWeather.fragment.WeatherFragment;
 import dmcs.astroWeather.task.WeatherDownloadByLatitudeAndLongitudeTask;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.UnitConverter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
         TextView coordinates = (TextView) findViewById(R.id.coordinates);
         if (coordinates != null) {
-            coordinates.setText(getString(R.string.coordinates) + " " + Parameter.LOCALIZATION_LATITUDE + ", " + Parameter.LOCALIZATION_LONGITUDE);
+            coordinates.setText(getString(R.string.coordinates) + " " + UnitConverter.getFormattedNumber(Parameter.LOCALIZATION_LATITUDE)
+                    + ", " + UnitConverter.getFormattedNumber(Parameter.LOCALIZATION_LONGITUDE));
         }
 
         if (viewPager != null) { // For phones

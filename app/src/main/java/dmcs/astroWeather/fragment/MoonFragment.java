@@ -11,6 +11,7 @@ import android.widget.TextView;
 import dmcs.astroWeather.Moon;
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.UnitConverter;
 
 /**
  * @Author Mateusz Wieczorek on 2016-05-11.
@@ -78,10 +79,10 @@ public class MoonFragment extends Fragment {
 
     private void setValues(View rootView) {
         TextView moonAge = (TextView) rootView.findViewById(R.id.moonAgeValue);
-        moonAge.setText(String.valueOf(moon.getAge()));
+        moonAge.setText(UnitConverter.getFormattedNumber(moon.getAge()));
 
         TextView moonIllumination = (TextView) rootView.findViewById(R.id.moonIlluminationValue);
-        moonIllumination.setText(String.valueOf(moon.getIllumination() * 100) + "%");
+        moonIllumination.setText(UnitConverter.getFormattedNumber(moon.getIllumination() * 100.0) + "%");
 
         TextView moonMoonrise = (TextView) rootView.findViewById(R.id.moonMoonriseValue);
         moonMoonrise.setText(String.valueOf(moon.getMoonrise()));

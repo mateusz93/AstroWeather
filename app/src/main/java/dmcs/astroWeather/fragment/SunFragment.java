@@ -11,6 +11,7 @@ import android.widget.TextView;
 import dmcs.astroWeather.R;
 import dmcs.astroWeather.Sun;
 import dmcs.astroWeather.util.Parameter;
+import dmcs.astroWeather.util.UnitConverter;
 
 /**
  * @Author Mateusz Wieczorek on 2016-05-11.
@@ -76,10 +77,10 @@ public class SunFragment extends Fragment {
 
     private void setValues(View rootView) {
         TextView sunAzimuthRise = (TextView) rootView.findViewById(R.id.sunAzimuthRiseValue);
-        sunAzimuthRise.setText(String.valueOf(sun.getAzimuthRise()));
+        sunAzimuthRise.setText(UnitConverter.getFormattedNumber(sun.getAzimuthRise()));
 
         TextView sunAzimuthSet = (TextView) rootView.findViewById(R.id.sunAzimuthSetValue);
-        sunAzimuthSet.setText(String.valueOf(sun.getAzimuthSet()));
+        sunAzimuthSet.setText(UnitConverter.getFormattedNumber(sun.getAzimuthSet()));
 
         TextView sunSunrise = (TextView) rootView.findViewById(R.id.sunSunriseValue);
         sunSunrise.setText(String.valueOf(sun.getSunrise()));
