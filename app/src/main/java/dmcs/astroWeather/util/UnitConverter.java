@@ -1,23 +1,32 @@
 package dmcs.astroWeather.util;
 
 /**
- * Created by Mateusz on 2016-06-08.
+ * @Author Mateusz Wieczorek on 2016-06-08.
  */
 public class UnitConverter {
 
-    public static double convertKilometerToMiles(double kilometer) {
-        return kilometer * 0.621371;
+    public static String convertKilometerToMiles(double kilometer) {
+        return getFormattedNumber(kilometer * 0.621371);
     }
 
-    public static double convertMileToKilometer(double mile) {
-        return mile * 1.60934;
+    public static String convertMileToKilometer(double mile) {
+        return getFormattedNumber(mile * 1.60934);
     }
 
-    public static double convertCelsiusToKelvin(double celsius) {
-        return celsius + 273.15;
+    public static String convertCelsiusToKelvin(double celsius) {
+        return getFormattedNumber(celsius + 273.0);
     }
 
-    public static double convertKelvinToCelsius(double kelvin) {
-        return kelvin - 273.15;
+    public static String convertKelvinToCelsius(double kelvin) {
+        return getFormattedNumber(kelvin - 273.0);
+    }
+
+    private static String getFormattedNumber(double number) {
+        number = Double.valueOf(String.format("%.2f", number)); // set precision
+        if(number == (long) number) {
+            return String.format("%d", (long) number);
+        } else {
+            return String.format("%s", number);
+        }
     }
 }

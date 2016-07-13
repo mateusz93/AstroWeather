@@ -242,7 +242,7 @@ public class ForecastWeatherFragment extends Fragment {
 
     private String getConverterTemperature(String temperature) {
         if (Parameter.TEMPERATURE_UNIT.equals("°K")) {
-            return String.valueOf(UnitConverter.convertCelsiusToKelvin(Double.valueOf(temperature)));
+            return UnitConverter.convertCelsiusToKelvin(Double.valueOf(temperature));
         }
         return temperature;
     }

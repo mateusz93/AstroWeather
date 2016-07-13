@@ -98,10 +98,10 @@ public class WeatherFragment extends Fragment {
             localTime = getFormattedTime(localTime);
 
             if (Parameter.SPEED_UNIT.equals("mi/h")) {
-                windSpeed = String.valueOf(UnitConverter.convertKilometerToMiles(Double.valueOf(windSpeed)));
+                windSpeed = UnitConverter.convertKilometerToMiles(Double.valueOf(windSpeed));
             }
             if (Parameter.TEMPERATURE_UNIT.equals("°K")) {
-                temperature = String.valueOf(UnitConverter.convertCelsiusToKelvin(Double.valueOf(temperature)));
+                temperature = UnitConverter.convertCelsiusToKelvin(Double.valueOf(temperature));
             }
 
             ImageView weatherIcon = (ImageView) rootView.findViewById(R.id.weatherIcon);
