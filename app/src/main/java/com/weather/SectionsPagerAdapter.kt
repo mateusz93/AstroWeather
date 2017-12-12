@@ -7,10 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import com.weather.fragment.ForecastWeatherFragment
 import com.weather.fragment.WeatherFragment
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
+
 class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment? {
@@ -22,13 +19,13 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getCount(): Int {
-        return 4
+        return 2
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
         when (position) {
-            0 -> return "Weather"
-            1 -> return "Forecast"
+            0 -> return "Pogoda"
+            1 -> return "Prognoza"
         }
         return null
     }

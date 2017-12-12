@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.weather.R
-
+import com.weather.util.Parameter
+import com.weather.util.WeatherDownloader
 import org.json.JSONArray
 import org.json.JSONException
 
@@ -30,11 +30,6 @@ class ForecastWeatherFragment : Fragment() {
         activity.runOnUiThread { setValues(rootView) }
     }
 
-    override fun onStop() {
-        super.onStop()
-        //thread.interrupt();
-    }
-
     // Store instance variables based on arguments passed
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +39,13 @@ class ForecastWeatherFragment : Fragment() {
 
     private fun setValues(rootView: View) {
         try {
-            val weatherForecast: JSONArray? = null
-            //            setIcons(rootView, weatherForecast);
-            //            setDates(rootView, weatherForecast);
-            //            setTemperatures(rootView, weatherForecast);
-            //            setDescriptions(rootView, weatherForecast);
+            val weatherForecast = WeatherDownloader.getWeatherByLatitudeAndLongitude("53.0", "27.0")
+                    .getJSONObject("item")
+                    .getJSONArray("forecast")
+            setIcons(rootView, weatherForecast)
+            setDates(rootView, weatherForecast)
+            setTemperatures(rootView, weatherForecast)
+            setDescriptions(rootView, weatherForecast)
         } catch (e: NullPointerException) {
             e.printStackTrace()
         }
@@ -78,35 +75,35 @@ class ForecastWeatherFragment : Fragment() {
         forecastDescription7.text = getForecastDescription(weatherForecast, 7)
     }
 
-    //    private void setTemperatures(View rootView, JSONArray weatherForecast) {
-    //        TextView forecastTemperature1 = (TextView) rootView.findViewById(R.id.forecastDay1TemperatureValue);
-    //        forecastTemperature1.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 1))
-    //                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 1)) + Parameter.TEMPERATURE_UNIT);
-    //
-    //        TextView forecastTemperature2 = (TextView) rootView.findViewById(R.id.forecastDay2TemperatureValue);
-    //        forecastTemperature2.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 2))
-    //                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 2)) + Parameter.TEMPERATURE_UNIT);
-    //
-    //        TextView forecastTemperature3 = (TextView) rootView.findViewById(R.id.forecastDay3TemperatureValue);
-    //        forecastTemperature3.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 3))
-    //                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 3)) + Parameter.TEMPERATURE_UNIT);
-    //
-    //        TextView forecastTemperature4 = (TextView) rootView.findViewById(R.id.forecastDay4TemperatureValue);
-    //        forecastTemperature4.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 4))
-    //                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 4)) + Parameter.TEMPERATURE_UNIT);
-    //
-    //        TextView forecastTemperature5 = (TextView) rootView.findViewById(R.id.forecastDay5TemperatureValue);
-    //        forecastTemperature5.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 5))
-    //                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 5)) + Parameter.TEMPERATURE_UNIT);
-    //
-    //        TextView forecastTemperature6 = (TextView) rootView.findViewById(R.id.forecastDay6TemperatureValue);
-    //        forecastTemperature6.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 6))
-    //                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 6)) + Parameter.TEMPERATURE_UNIT);
-    //
-    //        TextView forecastTemperature7 = (TextView) rootView.findViewById(R.id.forecastDay7TemperatureValue);
-    //        forecastTemperature7.setText(getConverterTemperature(getForecastLowTemperature(weatherForecast, 7))
-    //                + " - " + getConverterTemperature(getForecastHighTemperature(weatherForecast, 7)) + Parameter.TEMPERATURE_UNIT);
-    //    }
+    private fun setTemperatures(rootView: View, weatherForecast: JSONArray) {
+        val forecastTemperature1 = rootView.findViewById<TextView>(R.id.forecastDay1TemperatureValue)
+        forecastTemperature1.text = getForecastLowTemperature(weatherForecast, 1) +
+                " - " + getForecastHighTemperature(weatherForecast, 1) + Parameter.TEMPERATURE_UNIT
+
+        val forecastTemperature2 = rootView.findViewById<TextView>(R.id.forecastDay2TemperatureValue)
+        forecastTemperature2.text = getForecastLowTemperature(weatherForecast, 2) +
+                " - " + getForecastHighTemperature(weatherForecast, 2) + Parameter.TEMPERATURE_UNIT
+
+        val forecastTemperature3 = rootView.findViewById<TextView>(R.id.forecastDay3TemperatureValue)
+        forecastTemperature3.text = getForecastLowTemperature(weatherForecast, 3) +
+                " - " + getForecastHighTemperature(weatherForecast, 3) + Parameter.TEMPERATURE_UNIT
+
+        val forecastTemperature4 = rootView.findViewById<TextView>(R.id.forecastDay4TemperatureValue)
+        forecastTemperature4.text = getForecastLowTemperature(weatherForecast, 4)+
+                " - " + getForecastHighTemperature(weatherForecast, 4) + Parameter.TEMPERATURE_UNIT
+
+        val forecastTemperature5 = rootView.findViewById<TextView>(R.id.forecastDay5TemperatureValue)
+        forecastTemperature5.text = getForecastLowTemperature(weatherForecast, 5) +
+                " - " + getForecastHighTemperature(weatherForecast, 5) + Parameter.TEMPERATURE_UNIT
+
+        val forecastTemperature6 = rootView.findViewById<TextView>(R.id.forecastDay6TemperatureValue)
+        forecastTemperature6.text = getForecastLowTemperature(weatherForecast, 6) +
+                " - " + getForecastHighTemperature(weatherForecast, 6) + Parameter.TEMPERATURE_UNIT
+
+        val forecastTemperature7 = rootView.findViewById<TextView>(R.id.forecastDay7TemperatureValue)
+        forecastTemperature7.text = getForecastLowTemperature(weatherForecast, 7)+
+                " - " + getForecastHighTemperature(weatherForecast, 7) + Parameter.TEMPERATURE_UNIT
+    }
 
     private fun setDates(rootView: View, weatherForecast: JSONArray) {
         val forecastDate1 = rootView.findViewById<TextView>(R.id.forecastDay1DateValue)
@@ -198,7 +195,6 @@ class ForecastWeatherFragment : Fragment() {
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-
         return ""
     }
 

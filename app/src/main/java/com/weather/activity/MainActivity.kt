@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Vibrator
+import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 
 import com.weather.R
@@ -31,12 +33,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLayout() {
         val viewPager = findViewById<ViewPager>(R.id.container)
+        val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         viewPager.adapter = sectionsPagerAdapter
+        tabLayout.setupWithViewPager(viewPager)
         timeThread = createTimeThread()
         timeThread!!.start()
     }
-
 
     private fun createTimeThread(): Thread {
         return object : Thread() {
