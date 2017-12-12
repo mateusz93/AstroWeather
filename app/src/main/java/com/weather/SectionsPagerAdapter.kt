@@ -7,15 +7,14 @@ import android.support.v4.app.FragmentPagerAdapter
 import com.weather.fragment.ForecastWeatherFragment
 import com.weather.fragment.WeatherFragment
 
-
 class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment? {
         when (position) {
             0 -> return WeatherFragment.newInstance()
             1 -> return ForecastWeatherFragment.newInstance()
-            else -> return null
         }
+        return null
     }
 
     override fun getCount(): Int {
@@ -27,6 +26,6 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
             0 -> return "Pogoda"
             1 -> return "Prognoza"
         }
-        return null
+        return ""
     }
 }

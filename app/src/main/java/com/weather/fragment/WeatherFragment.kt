@@ -1,6 +1,8 @@
 package com.weather.fragment
 
 import android.os.Bundle
+
+
 import android.os.StrictMode
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -8,38 +10,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.weather.R
-import com.weather.util.Parameter
+import com.weather.util.DefaultParameter
 import com.weather.util.WeatherDownloader
-
 import org.json.JSONException
-import org.json.JSONObject
-
 import java.io.IOException
-
-
 /**
  * @author Mateusz Wieczorek
  */
 class WeatherFragment : Fragment() {
 
+    companion object {
+        fun newInstance(): WeatherFragment {
+            val fragment = WeatherFragment()
+            val args = Bundle()
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater!!.inflate(R.layout.weather_fragment, container, false)
-        createThread(rootView)
+        activity.runOnUiThread { setValues(rootView) }
         return rootView
     }
 
-    private fun createThread(rootView: View) {
-        activity.runOnUiThread { setValues(rootView) }
-    }
-
-    override fun onStop() {
-        super.onStop()
-        //thread.interrupt();
-    }
-
-    // Store instance variables based on arguments passed
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -48,11 +43,12 @@ class WeatherFragment : Fragment() {
 
     private fun setValues(rootView: View) {
         try {
-            val weather = WeatherDownloader.getWeatherByLatitudeAndLongitude("52", "27")
+            val weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(DefaultParameter.LOCALIZATION_LATITUDE.toString(),
+                                                                             DefaultParameter.LOCALIZATION_LONGITUDE.toString())
 
             val city = weather.getJSONObject("location").getString("city")
-            val latitude = Parameter.LOCALIZATION_LATITUDE.toString()
-            val longitude = Parameter.LOCALIZATION_LONGITUDE.toString()
+            val latitude = DefaultParameter.LOCALIZATION_LATITUDE.toString()
+            val longitude = DefaultParameter.LOCALIZATION_LONGITUDE.toString()
             val temperature = weather.getJSONObject("item").getJSONObject("condition").getString("temp")
             val windDirection = weather.getJSONObject("wind").getString("direction")
             val windSpeed = weather.getJSONObject("wind").getString("speed")
@@ -64,13 +60,6 @@ class WeatherFragment : Fragment() {
             description = getCurrentConditionFromDescription(description)
             var localTime = weather.getString("lastBuildDate")
             localTime = getFormattedTime(localTime)
-
-            //            if (Parameter.SPEED_UNIT.equals("mi/h")) {
-            //                windSpeed = UnitConverter.convertKilometerToMiles(Double.valueOf(windSpeed));
-            //            }
-            //            if (Parameter.TEMPERATURE_UNIT.equals("°K")) {
-            //                temperature = UnitConverter.convertCelsiusToKelvin(Double.valueOf(temperature));
-            //            }
 
             val weatherIcon = rootView.findViewById<ImageView>(R.id.weatherIcon)
             val id = resources.getIdentifier("icon_" + iconNumber, "drawable", context.packageName)
@@ -86,7 +75,7 @@ class WeatherFragment : Fragment() {
             longitudeValueView.text = longitude
 
             val temperatureViewView = rootView.findViewById<TextView>(R.id.weatherTemperatureValue)
-            temperatureViewView.text = temperature + Parameter.TEMPERATURE_UNIT
+            temperatureViewView.text = temperature + DefaultParameter.TEMPERATURE_UNIT
 
             val localTimeValueView = rootView.findViewById<TextView>(R.id.weatherLocalTimeValue)
             localTimeValueView.text = localTime
@@ -95,7 +84,7 @@ class WeatherFragment : Fragment() {
             windDirectionValueView.text = windDirection
 
             val windSpeedValueView = rootView.findViewById<TextView>(R.id.weatherWindSpeedValue)
-            windSpeedValueView.text = windSpeed + Parameter.SPEED_UNIT
+            windSpeedValueView.text = windSpeed + DefaultParameter.SPEED_UNIT
 
             val atmosphereHumidityValueView = rootView.findViewById<TextView>(R.id.weatherAtmosphereHumidityValue)
             atmosphereHumidityValueView.text = atmosphereHumidity + "%"
@@ -104,7 +93,7 @@ class WeatherFragment : Fragment() {
             atmosphereVisibilityValueView.text = atmosphereVisibility
 
             val atmospherePressureValueView = rootView.findViewById<TextView>(R.id.weatherAtmospherePressureValue)
-            atmospherePressureValueView.text = atmospherePressure + Parameter.PRESSURE_UNIT
+            atmospherePressureValueView.text = atmospherePressure + DefaultParameter.PRESSURE_UNIT
 
             val descriptionValueView = rootView.findViewById<TextView>(R.id.weatherDescriptionValue)
             descriptionValueView.text = description
@@ -115,11 +104,13 @@ class WeatherFragment : Fragment() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
     private fun getFormattedTime(localTime: String): String {
-        val time = localTime.split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val time = localTime
+                .split("\\s+".toRegex())
+                .dropLastWhile { it.isEmpty() }
+                .toTypedArray()
         var formattedTime = ""
         for (i in 0 until time.size - 2) {
             formattedTime += time[i] + " "
@@ -128,37 +119,21 @@ class WeatherFragment : Fragment() {
     }
 
     private fun getCurrentConditionFromDescription(description: String): String {
-        var description = description
         val firstIndex = description.indexOf("Current Conditions:")
         val lastIndex = description.indexOf("Forecast")
-        description = description.substring(firstIndex + 19, lastIndex)
-        description = description.replace("</b>".toRegex(), "")
-        description = description.replace("<b>".toRegex(), "")
-        description = description.replace("<BR />".toRegex(), "")
-        description = description.replace(":".toRegex(), "")
-        return description.trim { it <= ' ' }
+        return description
+                .substring(firstIndex + 19, lastIndex)
+                .replace("</b>".toRegex(), "")
+                .replace("<b>".toRegex(), "")
+                .replace("<BR />".toRegex(), "")
+                .replace(":".toRegex(), "")
+                .trim { it <= ' ' }
     }
 
     private fun getIconNumberFromDescription(description: String): String {
-        for (i in 48 downTo 0) {
-            if (description.contains("" + i + ".gif")) {
-                return "" + i
-            }
-        }
-        return "3200"
-    }
-
-    companion object {
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        fun newInstance(): WeatherFragment {
-            val fragment = WeatherFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
-        }
+        return (48 downTo 0)
+                .firstOrNull { description.contains(it.toString() + ".gif") }
+                ?.toString()
+                ?: DefaultParameter.ICON_NUMBER
     }
 }

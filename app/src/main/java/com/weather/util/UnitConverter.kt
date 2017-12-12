@@ -5,12 +5,9 @@ package com.weather.util
  */
 object UnitConverter {
 
-    fun convertMileToKilometer(mile: Double): String {
-        return getFormattedNumber(mile * 1.60934)
-    }
-
-    fun convertKelvinToCelsius(kelvin: Double): String {
-        return getFormattedNumber(kelvin - 273.0)
+    fun pressureMbToHpa(kelvin: Double): String {
+        //TODO
+        return ""
     }
 
     fun getFormattedNumber(number: Double): String {

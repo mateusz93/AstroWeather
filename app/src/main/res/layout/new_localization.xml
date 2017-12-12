@@ -29,36 +29,6 @@
                 android:weightSum="10">
 
                 <TextView
-                    android:id="@+id/localizationName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="11dp"
-                    android:layout_weight="3"
-                    android:text="@string/newLocalization.name"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white" />
-
-                <EditText
-                    android:id="@+id/LocalizationNameValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="7"
-                    android:ems="10"
-                    android:maxWidth="30dp"
-                    android:textColor="@android:color/white"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:weightSum="10">
-
-                <TextView
                     android:id="@+id/LocalizationLatitute"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -74,6 +44,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="7"
                     android:ems="10"
+                    android:text=""
                     android:inputType="numberDecimal"
                     android:maxWidth="30dp"
                     android:textColor="@android:color/white" />
@@ -107,6 +78,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="7"
                     android:ems="10"
+                    android:text=""
                     android:inputType="numberDecimal"
                     android:textColor="@android:color/white" />
 
@@ -137,6 +109,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="7"
                     android:ems="10"
+                    android:text=""
                     android:inputType="text"
                     android:maxWidth="30dp"
                     android:textColor="@android:color/white" />
@@ -167,6 +140,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="7"
                     android:ems="10"
+                    android:text=""
                     android:textColor="@android:color/white"
                     android:inputType="text" />
             </LinearLayout>

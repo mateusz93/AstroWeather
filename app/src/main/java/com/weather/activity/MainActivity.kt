@@ -10,20 +10,13 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
-
 import com.weather.R
 import com.weather.SectionsPagerAdapter
-
-import java.text.DateFormat
-import java.util.Date
 
 /**
  * @author Mateusz Wieczorek
  */
 class MainActivity : AppCompatActivity() {
-
-    private var timeThread: Thread? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,30 +30,8 @@ class MainActivity : AppCompatActivity() {
         val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         viewPager.adapter = sectionsPagerAdapter
         tabLayout.setupWithViewPager(viewPager)
-        timeThread = createTimeThread()
-        timeThread!!.start()
     }
 
-    private fun createTimeThread(): Thread {
-        return object : Thread() {
-            override fun run() {
-                try {
-                    while (!isInterrupted) {
-                        runOnUiThread {
-                            val time = findViewById<TextView>(R.id.time)
-                            if (time != null) {
-                                time.text = DateFormat.getDateTimeInstance().format(Date())
-                            }
-                        }
-                        Thread.sleep(1000)
-                    }
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-
-            }
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -70,22 +41,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
-        if (id == R.id.action_settings) {
-            val vb = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            val intent = Intent(this@MainActivity, SettingsActivity::class.java)
-            startActivity(intent)
-            return true
-        }
-
         if (id == R.id.action_localizations) {
-            val vb = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            val intent = Intent(this@MainActivity, LocalizationsActivity::class.java)
+            //val vb = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            val intent = Intent(this@MainActivity, NewLocalizationActivity::class.java)
             startActivity(intent)
-            return true
-        }
-
-        if (id == R.id.action_refresh) {
-            val vb = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             return true
         }
 
@@ -94,12 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        timeThread!!.interrupt()
         delegate.onStop()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
 }
