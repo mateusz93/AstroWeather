@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.weather.R
 import com.weather.util.DefaultParameter
 import com.weather.net.WeatherDownloader
+import org.json.JSONObject
 
 /**
  * @author Mateusz Wieczorek
@@ -41,8 +42,7 @@ class WeatherFragment : Fragment() {
     }
 
     private fun setValues(rootView: View) {
-        val weather = WeatherDownloader.getWeatherByLatitudeAndLongitude(DefaultParameter.LOCALIZATION_LATITUDE.toString(),
-                                                                         DefaultParameter.LOCALIZATION_LONGITUDE.toString())
+        val weather = downloadWeather()
         val city = weather.getJSONObject("location").getString("city")
         val latitude = DefaultParameter.LOCALIZATION_LATITUDE.toString()
         val longitude = DefaultParameter.LOCALIZATION_LONGITUDE.toString()
@@ -70,6 +70,17 @@ class WeatherFragment : Fragment() {
         rootView.findViewById<TextView>(R.id.weatherAtmosphereVisibilityValue).text = atmosphereVisibility
         rootView.findViewById<TextView>(R.id.weatherAtmospherePressureValue).text = atmospherePressure + DefaultParameter.PRESSURE_UNIT
         rootView.findViewById<TextView>(R.id.weatherDescriptionValue).text = condition
+    }
+
+    private fun downloadWeather(): JSONObject {
+        if (DefaultParameter.CITY.isNotBlank() && DefaultParameter.COUNTRY.isNotBlank()) {
+            val woeid = WeatherDownloader.getWoeidByCityAndCountry(DefaultParameter.CITY, DefaultParameter.COUNTRY)
+            if (woeid.isNotBlank()) {
+                return WeatherDownloader.getWeatherByWoeid(woeid)
+            }
+        }
+        return WeatherDownloader.getWeatherByLatitudeAndLongitude(DefaultParameter.LOCALIZATION_LATITUDE.toString(),
+                DefaultParameter.LOCALIZATION_LONGITUDE.toString())
     }
 
     private fun getFormattedTime(localTime: String): String {

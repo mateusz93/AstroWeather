@@ -134,7 +134,7 @@ class ForecastWeatherFragment : Fragment() {
         getForecastDate(weatherForecast, dayNumber)
 
     private fun generateTemperatureText(weatherForecast: JSONArray, dayNumber: Int) =
-        getForecastLowTemperature(weatherForecast, dayNumber) + " - " +
+        getForecastLowTemperature(weatherForecast, dayNumber) + "  -  " +
         getForecastHighTemperature(weatherForecast, dayNumber) +
         DefaultParameter.TEMPERATURE_UNIT
 

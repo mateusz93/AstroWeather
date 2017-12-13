@@ -35,17 +35,21 @@ class NewLocalizationActivity : Activity() {
         saveButton.setOnClickListener {
             val country = (findViewById<View>(R.id.LocalizationCountryValue) as EditText).text.toString()
             val city = (findViewById<View>(R.id.LocalizationCityValue) as EditText).text.toString()
-            val latitude = (findViewById<View>(R.id.LocalizationLatituteValue) as EditText).text.toString().toDouble()
-            val longitude = (findViewById<View>(R.id.LocalizationLongitudeValue) as EditText).text.toString().toDouble()
+            val latitude = (findViewById<View>(R.id.LocalizationLatituteValue) as EditText).text.toString()
+            val longitude = (findViewById<View>(R.id.LocalizationLongitudeValue) as EditText).text.toString()
 
             updateLocalization(city, country, latitude, longitude)
             goToMainActivity()
         }
     }
 
-    private fun updateLocalization(city: String, country: String, latitude: Double, longitude: Double) {
-        DefaultParameter.LOCALIZATION_LATITUDE = latitude
-        DefaultParameter.LOCALIZATION_LATITUDE = longitude
+    private fun updateLocalization(city: String, country: String, latitude: String, longitude: String) {
+        if (latitude.isNotBlank()) {
+            DefaultParameter.LOCALIZATION_LATITUDE = latitude.toDouble()
+        }
+        if (longitude.isNotBlank()) {
+            DefaultParameter.LOCALIZATION_LATITUDE = longitude.toDouble()
+        }
         DefaultParameter.CITY = city
         DefaultParameter.COUNTRY = country
     }

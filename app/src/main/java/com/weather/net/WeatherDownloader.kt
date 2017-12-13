@@ -2,7 +2,6 @@ package com.weather.net
 
 import org.json.JSONException
 import org.json.JSONObject
-
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -21,22 +20,11 @@ object WeatherDownloader {
                 "select * from geo.places(1) where text=\"" + city + ", " + country + "\"&format=json&lang=pl-PL"))
         city = unEscape(city)
         val json = JSONObject(readResponse(url))
-        return if (!city.equals(json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("name"), ignoreCase = true)) {
-            throw JSONException("IncorrectCityOrCountry")
-        } else {
-            json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("woeid")
-        }
-    }
 
-    @Throws(IOException::class, JSONException::class)
-    fun getWoeidByLatitudeAndLongitude(latitude: String, longitude: String): String {
-        val url = URL(escape("https://query.yahooapis.com/v1/public/yql?q=select * from weather.forecast where " +
-                "woeid in (SELECT woeid FROM geo.places WHERE text=\"(" + latitude + "," + longitude + ")\") " +
-                "and u=\"c\"&format=json&lang=pl-pl"))
-        val json = JSONObject(readResponse(url))
-        val city = json.getJSONObject("query").getJSONObject("results").getJSONObject("channel").getJSONObject("location").getString("city")
-        val country = json.getJSONObject("query").getJSONObject("results").getJSONObject("channel").getJSONObject("location").getString("country")
-        return getWoeidByCityAndCountry(city, country)
+        if (!city.equals(json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("name"), ignoreCase = true)) {
+            return ""
+        }
+        return json.getJSONObject("query").getJSONObject("results").getJSONObject("place").getString("woeid")
     }
 
     @Throws(IOException::class, JSONException::class)
