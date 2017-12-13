@@ -40,14 +40,19 @@ class ForecastWeatherFragment : Fragment() {
     }
 
     private fun setValues(rootView: View) {
-        val weatherForecast = WeatherDownloader.getWeatherByLatitudeAndLongitude(DefaultParameter.LOCALIZATION_LATITUDE.toString(),
-                                                                                 DefaultParameter.LOCALIZATION_LONGITUDE.toString())
-            .getJSONObject("item")
-            .getJSONArray("forecast")
-        setIcons(rootView, weatherForecast)
-        setDates(rootView, weatherForecast)
-        setTemperatures(rootView, weatherForecast)
-        setDescriptions(rootView, weatherForecast)
+        try {
+            val weatherForecast = WeatherDownloader.getWeatherByLatitudeAndLongitude(DefaultParameter.LOCALIZATION_LATITUDE.toString(),
+                                                                                     DefaultParameter.LOCALIZATION_LONGITUDE.toString())
+                    .getJSONObject("item")
+                    .getJSONArray("forecast")
+
+            setIcons(rootView, weatherForecast)
+            setDates(rootView, weatherForecast)
+            setTemperatures(rootView, weatherForecast)
+            setDescriptions(rootView, weatherForecast)
+        } catch (e: Exception) {
+            return
+        }
     }
 
     private fun setDescriptions(rootView: View, weatherForecast: JSONArray) {

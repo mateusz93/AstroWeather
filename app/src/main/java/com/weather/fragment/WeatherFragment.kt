@@ -42,34 +42,38 @@ class WeatherFragment : Fragment() {
     }
 
     private fun setValues(rootView: View) {
-        val weather = downloadWeather()
-        val city = weather.getJSONObject("location").getString("city")
-        val latitude = DefaultParameter.LOCALIZATION_LATITUDE.toString()
-        val longitude = DefaultParameter.LOCALIZATION_LONGITUDE.toString()
-        val temperature = weather.getJSONObject("item").getJSONObject("condition").getString("temp")
-        val windDirection = weather.getJSONObject("wind").getString("direction")
-        val windSpeed = weather.getJSONObject("wind").getString("speed")
-        val atmosphereHumidity = weather.getJSONObject("atmosphere").getString("humidity")
-        val atmosphereVisibility = weather.getJSONObject("atmosphere").getString("visibility")
-        val atmospherePressure = weather.getJSONObject("atmosphere").getString("pressure")
-        val description = weather.getJSONObject("item").getString("description")
-        val iconNumber = getIconNumberFromDescription(description)
-        val condition = getCurrentConditionFromDescription(description)
-        val formattedTime = getFormattedTime(weather.getString("lastBuildDate"))
-        val imageResourceId = resources.getIdentifier("icon_" + iconNumber, "drawable", context.packageName)
+        try {
+            val weather = downloadWeather()
+            val city = weather.getJSONObject("location").getString("city")
+            val latitude = DefaultParameter.LOCALIZATION_LATITUDE.toString()
+            val longitude = DefaultParameter.LOCALIZATION_LONGITUDE.toString()
+            val temperature = weather.getJSONObject("item").getJSONObject("condition").getString("temp")
+            val windDirection = weather.getJSONObject("wind").getString("direction")
+            val windSpeed = weather.getJSONObject("wind").getString("speed")
+            val atmosphereHumidity = weather.getJSONObject("atmosphere").getString("humidity")
+            val atmosphereVisibility = weather.getJSONObject("atmosphere").getString("visibility")
+            val atmospherePressure = weather.getJSONObject("atmosphere").getString("pressure")
+            val description = weather.getJSONObject("item").getString("description")
+            val iconNumber = getIconNumberFromDescription(description)
+            val condition = getCurrentConditionFromDescription(description)
+            val formattedTime = getFormattedTime(weather.getString("lastBuildDate"))
+            val imageResourceId = resources.getIdentifier("icon_" + iconNumber, "drawable", context.packageName)
 
-        rootView.findViewById<ImageView>(R.id.weatherIcon).setImageResource(imageResourceId)
-        rootView.findViewById<TextView>(R.id.weatherCityValue).text = city
-        rootView.findViewById<TextView>(R.id.weatherLatitudeValue).text = latitude
-        rootView.findViewById<TextView>(R.id.weatherLongitudeValue).text = longitude
-        rootView.findViewById<TextView>(R.id.weatherTemperatureValue).text = temperature + DefaultParameter.TEMPERATURE_UNIT
-        rootView.findViewById<TextView>(R.id.weatherLocalTimeValue).text = formattedTime
-        rootView.findViewById<TextView>(R.id.weatherWindDirectionValue).text = windDirection
-        rootView.findViewById<TextView>(R.id.weatherWindSpeedValue).text = windSpeed + DefaultParameter.SPEED_UNIT
-        rootView.findViewById<TextView>(R.id.weatherAtmosphereHumidityValue).text = atmosphereHumidity + DefaultParameter.HUMIDITY_UNIT
-        rootView.findViewById<TextView>(R.id.weatherAtmosphereVisibilityValue).text = atmosphereVisibility
-        rootView.findViewById<TextView>(R.id.weatherAtmospherePressureValue).text = atmospherePressure + DefaultParameter.PRESSURE_UNIT
-        rootView.findViewById<TextView>(R.id.weatherDescriptionValue).text = condition
+            rootView.findViewById<ImageView>(R.id.weatherIcon).setImageResource(imageResourceId)
+            rootView.findViewById<TextView>(R.id.weatherCityValue).text = city
+            rootView.findViewById<TextView>(R.id.weatherLatitudeValue).text = latitude
+            rootView.findViewById<TextView>(R.id.weatherLongitudeValue).text = longitude
+            rootView.findViewById<TextView>(R.id.weatherTemperatureValue).text = temperature + DefaultParameter.TEMPERATURE_UNIT
+            rootView.findViewById<TextView>(R.id.weatherLocalTimeValue).text = formattedTime
+            rootView.findViewById<TextView>(R.id.weatherWindDirectionValue).text = windDirection
+            rootView.findViewById<TextView>(R.id.weatherWindSpeedValue).text = windSpeed + DefaultParameter.SPEED_UNIT
+            rootView.findViewById<TextView>(R.id.weatherAtmosphereHumidityValue).text = atmosphereHumidity + DefaultParameter.HUMIDITY_UNIT
+            rootView.findViewById<TextView>(R.id.weatherAtmosphereVisibilityValue).text = atmosphereVisibility
+            rootView.findViewById<TextView>(R.id.weatherAtmospherePressureValue).text = atmospherePressure + DefaultParameter.PRESSURE_UNIT
+            rootView.findViewById<TextView>(R.id.weatherDescriptionValue).text = condition
+        } catch (e: Exception) {
+          return
+        }
     }
 
     private fun downloadWeather(): JSONObject {
