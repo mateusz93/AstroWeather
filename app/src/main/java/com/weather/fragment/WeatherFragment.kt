@@ -88,11 +88,7 @@ class WeatherFragment : Fragment() {
                 .split("\\s+".toRegex())
                 .dropLastWhile { it.isEmpty() }
                 .toTypedArray()
-        var formattedTime = ""
-        for (i in 0 until time.size - 2) {
-            formattedTime += time[i] + " "
-        }
-        return formattedTime.trim()
+        return time[time.size-3] + " " + time[time.size-2]
     }
 
     private fun getCurrentConditionFromDescription(description: String): String {
@@ -100,17 +96,16 @@ class WeatherFragment : Fragment() {
         val lastIndex = description.indexOf("Forecast")
         return description
                 .substring(firstIndex + 19, lastIndex)
-                .replace("</b>".toRegex(), "")
-                .replace("<b>".toRegex(), "")
-                .replace("<BR />".toRegex(), "")
-                .replace(":".toRegex(), "")
+                .replace("</b>", "")
+                .replace("<b>", "")
+                .replace("<BR />", "")
+                .replace(":", "")
                 .trim()
     }
 
-    private fun getIconNumberFromDescription(description: String): String {
-        return (48 downTo 0)
-                .firstOrNull { description.contains(it.toString() + ".gif") }
-                ?.toString()
-                ?: DefaultParameter.ICON_NUMBER
-    }
+    private fun getIconNumberFromDescription(description: String) =
+            (48 downTo 0)
+            .firstOrNull { description.contains(it.toString() + ".gif") }
+            ?.toString()
+            ?: DefaultParameter.ICON_NUMBER
 }
