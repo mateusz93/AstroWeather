@@ -1,9 +1,7 @@
 package com.weather.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Vibrator
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
@@ -11,7 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.weather.R
-import com.weather.SectionsPagerAdapter
+import com.weather.view.SectionsPagerAdapter
 
 /**
  * @author Mateusz Wieczorek
@@ -24,15 +22,6 @@ class MainActivity : AppCompatActivity() {
         initLayout()
     }
 
-    private fun initLayout() {
-        val viewPager = findViewById<ViewPager>(R.id.container)
-        val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
-        val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
-        viewPager.adapter = sectionsPagerAdapter
-        tabLayout.setupWithViewPager(viewPager)
-    }
-
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -40,20 +29,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-
         if (id == R.id.action_localizations) {
-            //val vb = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             val intent = Intent(this@MainActivity, NewLocalizationActivity::class.java)
             startActivity(intent)
             return true
         }
-
         return super.onOptionsItemSelected(item)
     }
 
     override fun onStop() {
         super.onStop()
         delegate.onStop()
+    }
+
+    private fun initLayout() {
+        val viewPager = findViewById<ViewPager>(R.id.container)
+        val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
+        val sectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        viewPager.adapter = sectionsPagerAdapter
+        tabLayout.setupWithViewPager(viewPager)
     }
 
 }

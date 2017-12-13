@@ -1,4 +1,4 @@
-package com.weather
+package com.weather.view
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -21,7 +21,7 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return 2
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
+    override fun getPageTitle(position: Int): CharSequence {
         when (position) {
             0 -> return "Pogoda"
             1 -> return "Prognoza"

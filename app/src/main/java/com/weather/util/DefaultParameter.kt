@@ -13,4 +13,5 @@ object DefaultParameter {
     val PRESSURE_UNIT = "mb"
     val SPEED_UNIT = "km/h"
     val TEMPERATURE_UNIT = "°C"
+    val HUMIDITY_UNIT = "%"
 }

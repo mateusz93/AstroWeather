@@ -25,7 +25,7 @@
     <string name="weather.localTime">Czas</string>
     <string name="weather.windDirection">Kierunek wiatru</string>
     <string name="weather.windSpeed">Predkosc wiatru</string>
-    <string name="weather.atmosphereHumidity">Cisnienie</string>
+    <string name="weather.atmosphereHumidity">Wilgotnosc</string>
     <string name="weather.atmosphereVisibility">Widocznosc</string>
     <string name="weather.atmospherePressure">Cisnienie</string>
     <string name="weather.description">Opis</string>
