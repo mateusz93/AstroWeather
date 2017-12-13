@@ -17,6 +17,7 @@
     <string name="newLocalization.city">Miasto</string>
     <string name="newLocalization.country">Kraj</string>
     <string name="newLocalization.save">Zapisz</string>
+    <string name="newLocalization.or">Lub</string>
 
     <string name="weather.city">Miasto</string>
     <string name="weather.longitude">Dlugosc geograf.</string>
