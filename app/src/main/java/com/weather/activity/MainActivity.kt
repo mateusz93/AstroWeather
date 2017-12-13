@@ -9,6 +9,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.weather.R
+import com.weather.net.LocalizationUtils
+import com.weather.util.DefaultParameter
 import com.weather.view.SectionsPagerAdapter
 
 /**
@@ -19,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (!DefaultParameter.IS_CUSTOM_LOCALIZATION) {
+            LocalizationUtils().updateLocalizationByGPSorNetwork(this)
+        }
         initLayout()
     }
 

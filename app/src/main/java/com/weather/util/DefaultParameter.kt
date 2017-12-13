@@ -14,4 +14,5 @@ object DefaultParameter {
     val SPEED_UNIT = "km/h"
     val TEMPERATURE_UNIT = "°C"
     val HUMIDITY_UNIT = "%"
+    var IS_CUSTOM_LOCALIZATION = false
 }

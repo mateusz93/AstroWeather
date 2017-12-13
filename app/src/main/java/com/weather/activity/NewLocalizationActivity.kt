@@ -52,6 +52,7 @@ class NewLocalizationActivity : Activity() {
         }
         DefaultParameter.CITY = city
         DefaultParameter.COUNTRY = country
+        DefaultParameter.IS_CUSTOM_LOCALIZATION = true
     }
 
     private fun goToMainActivity() {
